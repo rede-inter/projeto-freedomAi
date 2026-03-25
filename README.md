@@ -1,6 +1,6 @@
 # Copiloto Operacional de Suporte B2B
 
-Assistente interno de suporte B2B desenvolvido com Dify (Studio) como orquestrador de IA e backend Node.js/TypeScript como camada de regras de negócio e APIs.
+Assistente interno de suporte B2B desenvolvido com o Estúdio como orquestrador de IA e backend Node.js/TypeScript como camada de regras de negócio e APIs.
 
 ---
 
@@ -13,7 +13,7 @@ Assistente interno de suporte B2B desenvolvido com Dify (Studio) como orquestrad
                                │
                                ▼
 ┌─────────────────────────────────────────────────────────────┐
-│                    DIFY CHATFLOW (Studio)                    │
+│                         ESTÚDIO                              │
 │                                                             │
 │  LLM Classifier → parse_intent → Roteador de Intenção      │
 │         │                                                   │
@@ -53,11 +53,11 @@ Fastify oferece melhor performance, schema-first validation e suporte nativo a a
 **Por que armazenamento em memória?**
 O escopo do teste técnico é demonstrar capacidade de engenharia, integração e uso de IA — não construir um sistema de produção completo. Armazenamento em memória elimina dependências externas e simplifica o deploy, mantendo o foco na lógica de negócio.
 
-**Por que o Dify não contém regras de negócio?**
-O Dify é usado exclusivamente como orquestrador: classifica intenção, coleta dados e exibe respostas. Toda lógica crítica (validação, prioridade, idempotência, mascaramento) vive no backend — testável, versionável e independente de LLM.
+**Por que o Estúdio não contém regras de negócio?**
+O Estúdio é usado exclusivamente como orquestrador: classifica intenção, coleta dados e exibe respostas. Toda lógica crítica (validação, prioridade, idempotência, mascaramento) vive no backend — testável, versionável e independente de LLM.
 
 **Por que endpoints de lista (`/v1/customers`, `/v1/tickets`)?**
-O Dify 0.15.x não suporta interpolação de variáveis em caminhos de URL HTTP (ex: `/v1/customer/{{id}}`). A solução foi usar endpoints de lista com filtro em Code nodes JavaScript — padrão mais robusto para integrações com Dify.
+O Estúdio não suporta interpolação de variáveis em caminhos de URL HTTP (ex: `/v1/customer/{{id}}`). A solução foi usar endpoints de lista com filtro em Code nodes JavaScript — padrão mais robusto para integrações com o Estúdio.
 
 **Por que TypeScript + Zod?**
 TypeScript garante contratos em compile-time. Zod adiciona validação em runtime nas fronteiras do sistema (request body, env vars), eliminando uma classe inteira de bugs de tipo em produção.
@@ -90,8 +90,8 @@ projeto-freedomAi/
 │   │   └── integration/        # Testes de integração por endpoint
 │   └── Dockerfile
 ├── dify-scripts/               # Scripts JS dos Code nodes (referência)
-├── Copiloto Operacional de Suporte B2B.yml   # Fluxo Dify (importar no Studio)
-├── dify-docker-compose.yml     # Docker Compose para deploy do Dify
+├── Copiloto Operacional de Suporte B2B.yml   # Fluxo do Estúdio (importar no Studio)
+├── dify-docker-compose.yml     # Docker Compose para deploy do Estúdio
 ├── suporte-docs.txt            # Conteúdo da base de conhecimento
 └── README.md
 ```
@@ -161,12 +161,12 @@ docker service ps copilot_backend
 
 ---
 
-## Configuração do Dify
+## Configuração do Estúdio
 
 1. Acesse o Studio em `https://desafio.freedomai.com.br/apps`
 2. Crie um novo Chatflow
 3. Importe o arquivo `Copiloto Operacional de Suporte B2B.yml`
-4. Configure as variáveis de ambiente no Dify:
+4. Configure as variáveis de ambiente no Estúdio:
    - `BACKEND_URL`: URL base do backend (ex: `https://bd.redeinter.online`)
    - `BACKEND_API_KEY`: mesma chave configurada em `STUDIO_API_KEY` no backend
 5. Configure a base de conhecimento com o conteúdo de `suporte-docs.txt`

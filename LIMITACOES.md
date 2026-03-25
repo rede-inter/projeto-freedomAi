@@ -42,21 +42,21 @@
 
 ---
 
-### 5. Dify não suporta path params em URLs HTTP
+### 5. O Estúdio não suporta path params em URLs HTTP
 
-**O que é:** o Dify 0.15.x não interpola variáveis em caminhos de URL (ex: `/v1/customer/{{customer_id}}`). A solução adotada foi usar endpoints de lista com filtro em Code nodes JavaScript.
+**O que é:** o Estúdio não interpola variáveis em caminhos de URL (ex: `/v1/customer/{{customer_id}}`). A solução adotada foi usar endpoints de lista com filtro em Code nodes JavaScript.
 
 **Impacto:** o backend mantém endpoints redundantes (ex: `/v1/customers` para lista + `/v1/customer/:id` para acesso direto).
 
-**Solução futura:** quando o Dify suportar path params ou ao migrar para outra plataforma de orquestração, simplificar para apenas os endpoints RESTful padrão.
+**Solução futura:** quando o Estúdio suportar path params ou ao migrar para outra plataforma de orquestração, simplificar para apenas os endpoints RESTful padrão.
 
 ---
 
 ### 6. Base de conhecimento estática
 
-**O que é:** a documentação de processos e políticas está em `suporte-docs.txt` — um arquivo de texto importado manualmente no Dify.
+**O que é:** a documentação de processos e políticas está em `suporte-docs.txt` — um arquivo de texto importado manualmente no Estúdio.
 
-**Impacto:** atualizações de política exigem reedição manual do arquivo e reimportação no Dify.
+**Impacto:** atualizações de política exigem reedição manual do arquivo e reimportação no Estúdio.
 
 **Solução futura:** integrar com um sistema de gestão de conhecimento (Confluence, Notion, etc.) via webhook ou pipeline de sync automatizado.
 
