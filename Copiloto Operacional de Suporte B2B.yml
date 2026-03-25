@@ -1001,9 +1001,20 @@ workflow:
         isInLoop: false
         sourceType: if-else
         targetType: code
-      id: route-intent-case-triage-check-triage-customer-target
+      id: route-intent-case-triage-validate-triage-customer-target
       source: route-intent
       sourceHandle: case-triage
+      target: validate-triage-customer
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: if-else
+      id: validate-triage-customer-source-check-triage-customer-target
+      source: validate-triage-customer
+      sourceHandle: source
       target: check-triage-customer
       targetHandle: target
       type: custom
@@ -1012,9 +1023,9 @@ workflow:
         isInLoop: false
         sourceType: if-else
         targetType: code
-      id: check-triage-customer-case-has-customer-1774382887968-target
+      id: check-triage-customer-case-triage-customer-valid-1774382887968-target
       source: check-triage-customer
-      sourceHandle: case-has-customer
+      sourceHandle: case-triage-customer-valid
       target: '1774382887968'
       targetHandle: target
       type: custom
@@ -3888,25 +3899,37 @@ workflow:
       type: custom
       width: 242
     - data:
-        cases:
-        - case_id: case-has-customer
-          conditions:
-          - comparison_operator: is not
-            id: check-triage-customer-cond-1
-            value: ''
-            varType: string
-            variable_selector:
-            - parse-intent
-            - customer_id
-          id: case-has-customer
-          logical_operator: and
-        desc: ''
-        logical_operator: and
+        code: "function main({ customer_id }) {\n  var cust_id = (customer_id || '').trim().toUpperCase();\n\
+          \  if (!cust_id) {\n    return { \n      valid: 'false', \n      message:\
+          \ 'ID do cliente não informado. Para realizar a triagem, informe o ID no\
+          \ formato CUST-XXX (ex: CUST-001).',\n      customer_id_clean: ''\n    };\n\
+          \  }\n  if (!/^CUST-[A-Z0-9]+$/i.test(cust_id)) {\n    return { \n     \
+          \ valid: 'false', \n      message: 'Formato de ID inválido: \"' + cust_id\
+          \ + '\". Formato esperado: CUST-XXX (ex: CUST-001).',\n      customer_id_clean:\
+          \ ''\n    };\n  }\n  return { valid: 'true', message: '', customer_id_clean:\
+          \ cust_id };\n}"
+        code_language: javascript
+        outputs:
+          customer_id_clean:
+            children: null
+            type: string
+          message:
+            children: null
+            type: string
+          valid:
+            children: null
+            type: string
         selected: false
-        title: Cliente informado?
-        type: if-else
-      height: 124
-      id: check-triage-customer
+        title: Validar ID Triage
+        type: code
+        variables:
+        - value_selector:
+          - parse-intent
+          - customer_id
+          value_type: string
+          variable: customer_id
+      height: 52
+      id: validate-triage-customer
       position:
         x: 1450
         y: 1368.3589339115895
@@ -3919,14 +3942,54 @@ workflow:
       type: custom
       width: 242
     - data:
-        answer: 'Para realizar a triagem, preciso saber o ID do cliente. Por favor,
-          informe o ID no formato CUST-XXX (ex: CUST-001).'
+        cases:
+        - case_id: case-triage-customer-valid
+          conditions:
+          - comparison_operator: is
+            id: if-triage-customer-cond-1
+            value: 'true'
+            varType: string
+            variable_selector:
+            - validate-triage-customer
+            - valid
+          id: case-triage-customer-valid
+          logical_operator: and
+        desc: ''
+        logical_operator: and
+        selected: false
+        title: Cliente triage válido?
+        type: if-else
+      height: 124
+      id: check-triage-customer
+      position:
+        x: 1630
+        y: 1368.3589339115895
+      positionAbsolute:
+        x: 1630
+        y: 1368.3589339115895
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: '❌ Não foi possível realizar a triagem.
+
+
+          {{#validate-triage-customer.message#}}
+
+
+          Verifique o ID e tente novamente. Exemplo: CUST-001.'
         desc: ''
         selected: false
         title: Triagem sem cliente
         type: answer
-        variables: []
-      height: 107
+        variables:
+        - value_selector:
+          - validate-triage-customer
+          - message
+          variable: output_val
+      height: 152
       id: ans-triage-no-customer
       position:
         x: 1808
@@ -3955,8 +4018,8 @@ workflow:
         type: code
         variables:
         - value_selector:
-          - parse-intent
-          - customer_id
+          - validate-triage-customer
+          - customer_id_clean
           value_type: string
           variable: customer_id
         - value_selector:
