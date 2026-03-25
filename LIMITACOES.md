@@ -42,13 +42,13 @@
 
 ---
 
-### 5. O Estúdio não suporta path params em URLs HTTP
+### 5. Endpoints de lista paralelos aos endpoints por ID
 
-**O que é:** o Estúdio não interpola variáveis em caminhos de URL (ex: `/v1/customer/{{customer_id}}`). A solução adotada foi usar endpoints de lista com filtro em Code nodes JavaScript.
+**O que é:** o backend expõe tanto endpoints de lista (`/v1/customers`) quanto endpoints por ID (`/v1/customer/:id`). A integração com o Estúdio utiliza os endpoints de lista com filtro aplicado em Code nodes.
 
-**Impacto:** o backend mantém endpoints redundantes (ex: `/v1/customers` para lista + `/v1/customer/:id` para acesso direto).
+**Impacto:** superfície de API ligeiramente maior que o mínimo RESTful necessário.
 
-**Solução futura:** quando o Estúdio suportar path params ou ao migrar para outra plataforma de orquestração, simplificar para apenas os endpoints RESTful padrão.
+**Solução futura:** consolidar para apenas os endpoints padrão RESTful conforme a camada de orquestração evoluir.
 
 ---
 

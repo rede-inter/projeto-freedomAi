@@ -45,22 +45,12 @@ Assistente interno de suporte B2B desenvolvido com o Estúdio como orquestrador 
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### Decisões técnicas
+### Princípios de design
 
-**Por que Fastify e não Express?**
-Fastify oferece melhor performance, schema-first validation e suporte nativo a async/await. Para uma API de suporte interno com potencial de carga, a diferença de throughput é relevante.
-
-**Por que armazenamento em memória?**
-O escopo do teste técnico é demonstrar capacidade de engenharia, integração e uso de IA — não construir um sistema de produção completo. Armazenamento em memória elimina dependências externas e simplifica o deploy, mantendo o foco na lógica de negócio.
-
-**Por que o Estúdio não contém regras de negócio?**
-O Estúdio é usado exclusivamente como orquestrador: classifica intenção, coleta dados e exibe respostas. Toda lógica crítica (validação, prioridade, idempotência, mascaramento) vive no backend — testável, versionável e independente de LLM.
-
-**Por que endpoints de lista (`/v1/customers`, `/v1/tickets`)?**
-O Estúdio não suporta interpolação de variáveis em caminhos de URL HTTP (ex: `/v1/customer/{{id}}`). A solução foi usar endpoints de lista com filtro em Code nodes JavaScript — padrão mais robusto para integrações com o Estúdio.
-
-**Por que TypeScript + Zod?**
-TypeScript garante contratos em compile-time. Zod adiciona validação em runtime nas fronteiras do sistema (request body, env vars), eliminando uma classe inteira de bugs de tipo em produção.
+- **Separação de responsabilidades:** o Estúdio atua exclusivamente como orquestrador de IA — classifica intenção, coleta dados e formata respostas. Toda lógica de negócio (validação, prioridade, idempotência, mascaramento) está encapsulada no backend, mantendo-a testável, versionável e independente do modelo de linguagem.
+- **Validação em dupla camada:** Zod valida inputs em runtime nas fronteiras do sistema; TypeScript garante contratos em compile-time.
+- **Armazenamento em memória:** os dados são mantidos em memória com seeds controlados, eliminando dependências externas de infraestrutura. A interface de repositório está abstraída para facilitar substituição por banco de dados persistente.
+- **Performance:** Fastify foi adotado pelo throughput superior e suporte nativo a async/await, adequado para APIs de alta frequência.
 
 ---
 
