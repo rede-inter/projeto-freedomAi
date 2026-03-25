@@ -2073,22 +2073,16 @@ workflow:
       type: custom
       width: 242
     - data:
-        answer: '📋 Para criar o ticket, preciso das seguintes informações:
-
-
-          {{#guardrail-create.guard_errors#}}
-
-
-          Envie os dados no formato correto.'
+        answer: "📋 Para criar um ticket, preciso das seguintes informações:\n\n- **ID\
+          \ do cliente** (ex: CUST-001)\n- **Título** do problema (10 a 120 caracteres)\n\
+          - **Descrição** detalhada (mínimo 30 caracteres)\n- **Categoria**: bug,\
+          \ feature, question ou outage\n- **Email** do responsável\n\nPor favor,\
+          \ forneça essas informações."
         desc: ''
         selected: false
         title: Pedir Dados Criar Ticket
         type: answer
-        variables:
-        - value_selector:
-          - guardrail-create
-          - guard_errors
-          variable: output_val
+        variables: []
       height: 151
       id: ans-ask-missing
       position:
@@ -2396,22 +2390,15 @@ workflow:
       type: custom
       width: 242
     - data:
-        answer: '📋 Para criar o ticket, preciso das seguintes informações:
-
-
-          {{#guardrail-escalate.guard_errors#}}
-
-
-          Envie os dados no formato correto.'
+        answer: "📋 Para escalar um ticket, preciso das seguintes informações:\n\n\
+          - **ID do ticket** (ex: TKT-00001)\n- **Justificativa** detalhada (mínimo\
+          \ 20 caracteres)\n- **Email** do solicitante\n\nPor favor, forneça essas\
+          \ informações."
         desc: ''
         selected: false
         title: Pedir Dados de Escalonamento
         type: answer
-        variables:
-        - value_selector:
-          - guardrail-escalate
-          - guard_errors
-          variable: output_val
+        variables: []
       height: 151
       id: ans-ask-missing-esc
       position:
