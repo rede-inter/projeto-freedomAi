@@ -3973,23 +3973,14 @@ workflow:
       type: custom
       width: 242
     - data:
-        answer: '❌ Não foi possível realizar a triagem.
-
-
-          {{#validate-triage-customer.message#}}
-
-
-          Verifique o ID e tente novamente. Exemplo: CUST-001.'
+        answer: 'Para realizar a triagem, preciso saber o ID do cliente. Informe o
+          ID no formato CUST-XXX (ex: CUST-001) junto com a descrição do problema.'
         desc: ''
         selected: false
         title: Triagem sem cliente
         type: answer
-        variables:
-        - value_selector:
-          - validate-triage-customer
-          - message
-          variable: output_val
-      height: 152
+        variables: []
+      height: 107
       id: ans-triage-no-customer
       position:
         x: 1808
