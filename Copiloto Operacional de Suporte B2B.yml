@@ -130,90 +130,6 @@ workflow:
       zIndex: 0
     - data:
         isInIteration: false
-        sourceType: code
-        targetType: code
-      id: e03
-      selected: false
-      source: parse-intent
-      sourceHandle: source
-      target: validate-by-intent
-      targetHandle: target
-      type: custom
-      zIndex: 0
-    - data:
-        isInLoop: false
-        sourceType: http-request
-        targetType: answer
-      id: evt-customer-source-1774311736000-target
-      selected: false
-      source: evt-customer
-      sourceHandle: source
-      target: '1774311736000'
-      targetHandle: target
-      type: custom
-      zIndex: 0
-    - data:
-        isInLoop: false
-        sourceType: http-request
-        targetType: answer
-      id: evt-sla-source-17743702052110-target
-      selected: false
-      source: evt-sla
-      sourceHandle: source
-      target: '17743702052110'
-      targetHandle: target
-      type: custom
-      zIndex: 0
-    - data:
-        isInLoop: false
-        sourceType: http-request
-        targetType: answer
-      id: evt-ticket-source-17743704437030-target
-      selected: false
-      source: evt-ticket
-      sourceHandle: source
-      target: '17743704437030'
-      targetHandle: target
-      type: custom
-      zIndex: 0
-    - data:
-        isInLoop: false
-        sourceType: http-request
-        targetType: answer
-      id: evt-create-source-17743713253710-target
-      selected: false
-      source: evt-create
-      sourceHandle: source
-      target: '17743713253710'
-      targetHandle: target
-      type: custom
-      zIndex: 0
-    - data:
-        isInLoop: false
-        sourceType: http-request
-        targetType: answer
-      id: evt-escalate-source-17743714408550-target
-      selected: false
-      source: evt-escalate
-      sourceHandle: source
-      target: '17743714408550'
-      targetHandle: target
-      type: custom
-      zIndex: 0
-    - data:
-        isInLoop: false
-        sourceType: http-request
-        targetType: answer
-      id: evt-triage-source-17743717429330-target
-      selected: false
-      source: evt-triage
-      sourceHandle: source
-      target: '17743717429330'
-      targetHandle: target
-      type: custom
-      zIndex: 0
-    - data:
-        isInIteration: false
         isInLoop: false
         sourceType: if-else
         targetType: http-request
@@ -227,30 +143,6 @@ workflow:
       zIndex: 0
     - data:
         isInLoop: false
-        sourceType: http-request
-        targetType: if-else
-      id: http-summary-source-check-summary-target
-      selected: false
-      source: http-summary
-      sourceHandle: source
-      target: check-summary
-      targetHandle: target
-      type: custom
-      zIndex: 0
-    - data:
-        isInLoop: false
-        sourceType: if-else
-        targetType: code
-      id: check-summary-case-summary-ok-code-format-summary-target
-      selected: false
-      source: check-summary
-      sourceHandle: case-summary-ok
-      target: code-format-summary
-      targetHandle: target
-      type: custom
-      zIndex: 0
-    - data:
-        isInLoop: false
         sourceType: if-else
         targetType: answer
       id: check-summary-false-ans-no-summary-target
@@ -258,18 +150,6 @@ workflow:
       source: check-summary
       sourceHandle: 'false'
       target: ans-no-summary
-      targetHandle: target
-      type: custom
-      zIndex: 0
-    - data:
-        isInLoop: false
-        sourceType: code
-        targetType: answer
-      id: code-format-summary-source-ans-summary-target
-      selected: false
-      source: code-format-summary
-      sourceHandle: source
-      target: ans-summary
       targetHandle: target
       type: custom
       zIndex: 0
@@ -306,18 +186,6 @@ workflow:
       source: guardrail-create
       sourceHandle: source
       target: check-create
-      targetHandle: target
-      type: custom
-      zIndex: 0
-    - data:
-        isInIteration: false
-        sourceType: if-else
-        targetType: answer
-      id: e18
-      selected: false
-      source: check-create
-      sourceHandle: 'false'
-      target: ans-ask-missing
       targetHandle: target
       type: custom
       zIndex: 0
@@ -395,18 +263,6 @@ workflow:
       zIndex: 0
     - data:
         isInIteration: false
-        sourceType: if-else
-        targetType: answer
-      id: e28
-      selected: false
-      source: check-esc
-      sourceHandle: 'false'
-      target: ans-ask-missing-esc
-      targetHandle: target
-      type: custom
-      zIndex: 0
-    - data:
-        isInIteration: false
         sourceType: http-request
         targetType: code
       id: e29
@@ -414,30 +270,6 @@ workflow:
       source: http-escalate
       sourceHandle: source
       target: check-http-escalate
-      targetHandle: target
-      type: custom
-      zIndex: 0
-    - data:
-        isInIteration: false
-        sourceType: code
-        targetType: if-else
-      id: e30
-      selected: false
-      source: check-http-escalate
-      sourceHandle: source
-      target: if-escalate-ok
-      targetHandle: target
-      type: custom
-      zIndex: 0
-    - data:
-        isInIteration: false
-        sourceType: if-else
-        targetType: answer
-      id: e32
-      selected: false
-      source: if-escalate-ok
-      sourceHandle: 'false'
-      target: ans-error-escalate
       targetHandle: target
       type: custom
       zIndex: 0
@@ -613,18 +445,6 @@ workflow:
         isInIteration: false
         sourceType: code
         targetType: if-else
-      id: e44b
-      selected: false
-      source: filter-customer
-      sourceHandle: source
-      target: if-customer-ok
-      targetHandle: target
-      type: custom
-      zIndex: 0
-    - data:
-        isInIteration: false
-        sourceType: code
-        targetType: if-else
       id: e49b
       selected: false
       source: filter-sla
@@ -658,19 +478,6 @@ workflow:
       type: custom
       zIndex: 0
     - data:
-        isInIteration: false
-        isInLoop: false
-        sourceType: code
-        targetType: http-request
-      id: 17743116666410-source-evt-customer-target
-      selected: false
-      source: '17743116666410'
-      sourceHandle: source
-      target: evt-customer
-      targetHandle: target
-      type: custom
-      zIndex: 0
-    - data:
         isInLoop: false
         sourceType: knowledge-retrieval
         targetType: llm
@@ -684,18 +491,6 @@ workflow:
       zIndex: 0
     - data:
         isInLoop: false
-        sourceType: code
-        targetType: http-request
-      id: 17743702006140-source-evt-sla-target
-      selected: false
-      source: '17743702006140'
-      sourceHandle: source
-      target: evt-sla
-      targetHandle: target
-      type: custom
-      zIndex: 0
-    - data:
-        isInLoop: false
         sourceType: if-else
         targetType: code
       id: if-sla-ok-case-sla-ok-17743702006140-target
@@ -703,18 +498,6 @@ workflow:
       source: if-sla-ok
       sourceHandle: case-sla-ok
       target: '17743702006140'
-      targetHandle: target
-      type: custom
-      zIndex: 0
-    - data:
-        isInLoop: false
-        sourceType: code
-        targetType: http-request
-      id: 17743704399200-source-evt-ticket-target
-      selected: false
-      source: '17743704399200'
-      sourceHandle: source
-      target: evt-ticket
       targetHandle: target
       type: custom
       zIndex: 0
@@ -744,18 +527,6 @@ workflow:
       zIndex: 0
     - data:
         isInLoop: false
-        sourceType: code
-        targetType: http-request
-      id: 17743713197380-source-evt-create-target
-      selected: false
-      source: '17743713197380'
-      sourceHandle: source
-      target: evt-create
-      targetHandle: target
-      type: custom
-      zIndex: 0
-    - data:
-        isInLoop: false
         sourceType: if-else
         targetType: code
       id: if-escalate-ok-case-escalate-ok-17743714317700-target
@@ -768,18 +539,6 @@ workflow:
       zIndex: 0
     - data:
         isInLoop: false
-        sourceType: code
-        targetType: http-request
-      id: 17743714317700-source-evt-escalate-target
-      selected: false
-      source: '17743714317700'
-      sourceHandle: source
-      target: evt-escalate
-      targetHandle: target
-      type: custom
-      zIndex: 0
-    - data:
-        isInLoop: false
         sourceType: if-else
         targetType: code
       id: if-triage-ok-case-triage-ok-17743717332860-target
@@ -787,18 +546,6 @@ workflow:
       source: if-triage-ok
       sourceHandle: case-triage-ok
       target: '17743717332860'
-      targetHandle: target
-      type: custom
-      zIndex: 0
-    - data:
-        isInLoop: false
-        sourceType: code
-        targetType: http-request
-      id: 17743717332860-source-evt-triage-target
-      selected: false
-      source: '17743717332860'
-      sourceHandle: source
-      target: evt-triage
       targetHandle: target
       type: custom
       zIndex: 0
@@ -843,17 +590,6 @@ workflow:
       source: '17743723273630'
       sourceHandle: 'false'
       target: '17743723513660'
-      targetHandle: target
-      type: custom
-      zIndex: 0
-    - data:
-        isInLoop: false
-        sourceType: code
-        targetType: if-else
-      id: validate-by-intent-source-route-intent-target
-      source: validate-by-intent
-      sourceHandle: source
-      target: route-intent
       targetHandle: target
       type: custom
       zIndex: 0
@@ -1101,6 +837,374 @@ workflow:
       targetHandle: target
       type: custom
       zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: if-else
+      id: parse-intent-source-route-intent-target
+      source: parse-intent
+      sourceHandle: source
+      target: route-intent
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: answer
+      id: 17743116666410-source-1774311736000-target
+      source: '17743116666410'
+      sourceHandle: source
+      target: '1774311736000'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: answer
+        targetType: http-request
+      id: 1774311736000-source-evt-customer-target
+      source: '1774311736000'
+      sourceHandle: source
+      target: evt-customer
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: answer
+      id: 17743702006140-source-17743702052110-target
+      source: '17743702006140'
+      sourceHandle: source
+      target: '17743702052110'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: answer
+        targetType: http-request
+      id: 17743702052110-source-evt-sla-target
+      source: '17743702052110'
+      sourceHandle: source
+      target: evt-sla
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: answer
+      id: 17743704399200-source-17743704437030-target
+      source: '17743704399200'
+      sourceHandle: source
+      target: '17743704437030'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: answer
+        targetType: http-request
+      id: 17743704437030-source-evt-ticket-target
+      source: '17743704437030'
+      sourceHandle: source
+      target: evt-ticket
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: answer
+      id: 17743713197380-source-17743713253710-target
+      source: '17743713197380'
+      sourceHandle: source
+      target: '17743713253710'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: answer
+      id: 17743714317700-source-17743714408550-target
+      source: '17743714317700'
+      sourceHandle: source
+      target: '17743714408550'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: answer
+      id: 17743717332860-source-17743717429330-target
+      source: '17743717332860'
+      sourceHandle: source
+      target: '17743717429330'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: code
+      id: filter-customer-source-1774420120239-target
+      source: filter-customer
+      sourceHandle: source
+      target: '1774420120239'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: if-else
+      id: 1774420120239-source-if-customer-ok-target
+      source: '1774420120239'
+      sourceHandle: source
+      target: if-customer-ok
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: answer
+        targetType: http-request
+      id: ans-error-customer-source-evt-customer-target
+      source: ans-error-customer
+      sourceHandle: source
+      target: evt-customer
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: code
+      id: check-create-false-1774423312177-target
+      source: check-create
+      sourceHandle: 'false'
+      target: '1774423312177'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: answer
+      id: 1774423312177-source-ans-ask-missing-target
+      source: '1774423312177'
+      sourceHandle: source
+      target: ans-ask-missing
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: code
+      id: check-esc-false-1774424505602-target
+      source: check-esc
+      sourceHandle: 'false'
+      target: '1774424505602'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: answer
+      id: 1774424505602-source-ans-ask-missing-esc-target
+      source: '1774424505602'
+      sourceHandle: source
+      target: ans-ask-missing-esc
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: http-request
+        targetType: if-else
+      id: http-summary-source-check-summary-target
+      source: http-summary
+      sourceHandle: source
+      target: check-summary
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: code
+      id: check-summary-case-summary-ok-17744396780480-target
+      source: check-summary
+      sourceHandle: case-summary-ok
+      target: '17744396780480'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: answer
+      id: 17744396780480-source-17744395807700-target
+      source: '17744396780480'
+      sourceHandle: source
+      target: '17744395807700'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: answer
+        targetType: code
+      id: 17743717429330-source-1774440993570-target
+      source: '17743717429330'
+      sourceHandle: source
+      target: '1774440993570'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: http-request
+      id: 1774440993570-source-evt-triage-target
+      source: '1774440993570'
+      sourceHandle: source
+      target: evt-triage
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: answer
+        targetType: code
+      id: 17743713253710-source-1774441116373-target
+      source: '17743713253710'
+      sourceHandle: source
+      target: '1774441116373'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: http-request
+      id: 1774441116373-source-evt-create-target
+      source: '1774441116373'
+      sourceHandle: source
+      target: evt-create
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: answer
+        targetType: code
+      id: 17743714408550-source-1774441592845-target
+      source: '17743714408550'
+      sourceHandle: source
+      target: '1774441592845'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: http-request
+      id: 1774441592845-source-evt-escalate-target
+      source: '1774441592845'
+      sourceHandle: source
+      target: evt-escalate
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: code
+      id: check-http-escalate-source-1774443069170-target
+      source: check-http-escalate
+      sourceHandle: source
+      target: '1774443069170'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: if-else
+      id: 1774443069170-source-if-escalate-ok-target
+      source: '1774443069170'
+      sourceHandle: source
+      target: if-escalate-ok
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: if-else
+      id: if-escalate-ok-false-1774443398681-target
+      source: if-escalate-ok
+      sourceHandle: 'false'
+      target: '1774443398681'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: answer
+      id: 1774443398681-true-ans-error-escalate-target
+      source: '1774443398681'
+      sourceHandle: 'true'
+      target: ans-error-escalate
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: answer
+      id: 1774443398681-31f5fa4a-db50-4437-972a-6068152a4f4f-1774443667659-target
+      source: '1774443398681'
+      sourceHandle: 31f5fa4a-db50-4437-972a-6068152a4f4f
+      target: '1774443667659'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: answer
+      id: 1774443398681-false-1774443670661-target
+      source: '1774443398681'
+      sourceHandle: 'false'
+      target: '1774443670661'
+      targetHandle: target
+      type: custom
+      zIndex: 0
     nodes:
     - data:
         desc: ''
@@ -1166,7 +1270,8 @@ workflow:
             categoria, tempo de resposta, ou qualquer pergunta conceitual que NÃO
             envolva um ID específico
 
-            RESUMO_ATENDIMENTO — usuário quer ver o resumo ou histórico do atendimento atual (ex: \"resumo do atendimento\", \"o que foi feito\", \"histórico\")
+            RESUMO_ATENDIMENTO — usuário quer ver o resumo ou histórico do atendimento
+            atual (ex: \"resumo do atendimento\", \"o que foi feito\", \"histórico\")
 
             UNKNOWN — não foi possível determinar a intenção com clareza
 
@@ -1302,80 +1407,6 @@ workflow:
       type: custom
       width: 242
     - data:
-        code: "function main({intent, customer_id, ticket_id}) {\n  var result = {\n\
-          \    customer_valid: 'true', ticket_valid: 'true',\n    customer_errors:\
-          \ '', ticket_errors: '', should_proceed: 'true'\n  };\n  var needs_customer\
-          \ = ['GET_CUSTOMER','GET_SLA','CREATE_TICKET'].indexOf(intent) !== -1;\n\
-          \  var needs_ticket   = ['GET_TICKET','ESCALATE_TICKET'].indexOf(intent)\
-          \ !== -1;\n  var intent_messages = {\n    'GET_CUSTOMER':'consultar um cliente','GET_SLA':'ver\
-          \ o SLA de um cliente',\n    'GET_TICKET':'visualizar um ticket','CREATE_TICKET':'criar\
-          \ um novo ticket',\n    'ESCALATE_TICKET':'escalar um ticket','TRIAGE':'fazer\
-          \ triagem de um problema'\n  };\n  if (needs_customer) {\n    var cust_id\
-          \ = (customer_id || '').trim().toUpperCase();\n    if (!cust_id) {\n   \
-          \   result.customer_valid = 'false';\n      result.customer_errors = 'ID\
-          \ do cliente não informado. Para ' + (intent_messages[intent] || 'esta operação')\
-          \ + ', informe o ID no formato CUST-XXX (ex: CUST-001).';\n      result.should_proceed\
-          \ = 'false';\n    } else if (!/^CUST-[A-Z0-9]+$/i.test(cust_id)) {\n   \
-          \   result.customer_valid = 'false';\n      result.customer_errors = 'Formato\
-          \ de ID de cliente inválido: \"' + cust_id + '\". Formato esperado: CUST-XXX\
-          \ (ex: CUST-001).';\n      result.should_proceed = 'false';\n    }\n  }\n\
-          \  if (needs_ticket) {\n    var tkt_id = (ticket_id || '').trim().toUpperCase();\n\
-          \    if (!tkt_id) {\n      result.ticket_valid = 'false';\n      result.ticket_errors\
-          \ = 'ID do ticket não informado. Para ' + (intent_messages[intent] || 'esta\
-          \ operação') + ', informe o ID no formato TKT-00000 (ex: TKT-00001).';\n\
-          \      result.should_proceed = 'false';\n    } else if (!/^TKT-\\d{5}$/i.test(tkt_id))\
-          \ {\n      result.ticket_valid = 'false';\n      result.ticket_errors =\
-          \ 'Formato de ID de ticket inválido: \"' + tkt_id + '\". Formato esperado:\
-          \ TKT-NNNNN com 5 dígitos (ex: TKT-00001).';\n      result.should_proceed\
-          \ = 'false';\n    }\n  }\n  return result;\n}"
-        code_language: javascript
-        desc: ''
-        outputs:
-          customer_errors:
-            children: null
-            type: string
-          customer_valid:
-            children: null
-            type: string
-          should_proceed:
-            children: null
-            type: string
-          ticket_errors:
-            children: null
-            type: string
-          ticket_valid:
-            children: null
-            type: string
-        selected: false
-        title: Validar IDs por Intenção
-        type: code
-        variables:
-        - value_selector:
-          - parse-intent
-          - intent
-          variable: intent
-        - value_selector:
-          - parse-intent
-          - customer_id
-          variable: customer_id
-        - value_selector:
-          - parse-intent
-          - ticket_id
-          variable: ticket_id
-      height: 52
-      id: validate-by-intent
-      position:
-        x: 705.1823612295248
-        y: 396
-      positionAbsolute:
-        x: 705.1823612295248
-        y: 396
-      selected: false
-      sourcePosition: right
-      targetPosition: left
-      type: custom
-      width: 242
-    - data:
         cases:
         - case_id: case-get-customer
           conditions:
@@ -1446,7 +1477,7 @@ workflow:
         selected: false
         title: Roteador de Intenção
         type: if-else
-      height: 412
+      height: 460
       id: route-intent
       position:
         x: 1172
@@ -1556,10 +1587,11 @@ workflow:
         - case_id: case-customer-ok
           conditions:
           - comparison_operator: is
-            value: 'true'
+            value: success
+            varType: string
             variable_selector:
-            - filter-customer
-            - is_success
+            - '1774420120239'
+            - status
           id: case-customer-ok
           logical_operator: and
         desc: ''
@@ -1581,25 +1613,27 @@ workflow:
       type: custom
       width: 242
     - data:
-        answer: 'Desculpe, não consegui concluir essa operação agora. O serviço pode
-          estar temporariamente indisponível.
+        answer: '❌ Cliente não encontrado.
 
 
-          Tente novamente em alguns minutos. Se o problema continuar, avise o time
-          de suporte com o código: {{#sys.conversation_id#}}'
+          {{#1774420120239.message#}}
+
+
+          Verifique o ID e tente novamente. Exemplo: CUST-001 para cliente ou TKT-00001
+          para ticket.'
         desc: ''
         selected: false
-        title: Erro API Customer
+        title: cliente_nao_encontrado
         type: answer
         variables: []
-      height: 200
+      height: 167
       id: ans-error-customer
       position:
-        x: 5050.196542944758
-        y: -876.3390010881021
+        x: 5715.0713432497505
+        y: -786.0674944937565
       positionAbsolute:
-        x: 5050.196542944758
-        y: -876.3390010881021
+        x: 5715.0713432497505
+        y: -786.0674944937565
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -1980,11 +2014,15 @@ workflow:
           \    return {guard_ok:'false',guard_errors:'Não foi possível extrair os\
           \ dados. Por favor, forneça todas as informações novamente.',\n        \
           \    customer_id:'',title:'',description:'',category:'',reporter_email:'',affected_users:'1',impact_level:'low'};\n\
-          \  }\n  if (!cid || !/^CUST-[A-Z0-9]+$/i.test(cid))\n    errs.push('ID do\
-          \ cliente inválido — formato esperado: CUST-XXX');\n  if (title.length <\
-          \ 10 || title.length > 120)\n    errs.push('Título deve ter 10-120 caracteres\
-          \ (atual: ' + title.length + ')');\n  if (desc.length < 30)\n    errs.push('Descrição\
-          \ deve ter mínimo 30 caracteres (atual: ' + desc.length + ')');\n  if (['bug','feature','question','outage'].indexOf(cat)\
+          \  }\n  \n  // Verifica se extraiu dados válidos\n  if (!title && !desc\
+          \ && !cat && !email) {\n    errs.push('Nenhum dado válido foi identificado.\
+          \ Por favor, informe os dados do ticket: cliente (CUST-XXX), título, descrição,\
+          \ categoria, email.');\n  }\n  \n  if (!cid || !/^CUST-[A-Z0-9]+$/i.test(cid))\n\
+          \    errs.push('ID do cliente inválido — formato esperado: CUST-XXX');\n\
+          \  if (title.length < 10 || title.length > 120)\n    errs.push('Título deve\
+          \ ter 10-120 caracteres (atual: ' + title.length + ')');\n  if (desc.length\
+          \ < 30)\n    errs.push('Descrição deve ter mínimo 30 caracteres (atual:\
+          \ ' + desc.length + ')');\n  if (['bug','feature','question','outage'].indexOf(cat)\
           \ === -1)\n    errs.push('Categoria inválida — use: bug, feature, question\
           \ ou outage');\n  if (!email || !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email))\n\
           \    errs.push('Email do responsável inválido');\n  return {\n    guard_ok:\
@@ -2033,11 +2071,11 @@ workflow:
       height: 52
       id: guardrail-create
       position:
-        x: 2004.6434322604327
-        y: 313.00236617202194
+        x: 1991.333437327376
+        y: 562.8207326078601
       positionAbsolute:
-        x: 2004.6434322604327
-        y: 313.00236617202194
+        x: 1991.333437327376
+        y: 562.8207326078601
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -2073,7 +2111,13 @@ workflow:
       type: custom
       width: 242
     - data:
-        answer: '{{#guardrail-create.guard_errors#}}'
+        answer: '📋 Para criar o ticket, preciso das seguintes informações:
+
+
+          {{#1774423312177.mensagem#}}
+
+
+          Envie os dados no formato correto.'
         desc: ''
         selected: false
         title: Pedir Dados Criar Ticket
@@ -2086,10 +2130,10 @@ workflow:
       height: 151
       id: ans-ask-missing
       position:
-        x: 2841.491589358795
+        x: 3141.491589358795
         y: 511.18183312781673
       positionAbsolute:
-        x: 2841.491589358795
+        x: 3141.491589358795
         y: 511.18183312781673
       selected: false
       sourcePosition: right
@@ -2132,7 +2176,7 @@ workflow:
         type: http-request
         url: '{{#env.BACKEND_URL#}}/v1/ticket'
         variables: []
-      height: 157
+      height: 141
       id: http-create
       position:
         x: 2841.491589358795
@@ -2268,7 +2312,8 @@ workflow:
           text: 'Você é um extrator de dados para escalonamento de tickets de suporte
             B2B.
 
-            Analise o histórico da conversa e extraia os campos necessários.
+
+            Analise a mensagem do usuário e extraia os campos necessários.
 
 
             CAMPOS OBRIGATÓRIOS:
@@ -2280,9 +2325,16 @@ workflow:
             - requestedBy: email de quem solicita o escalonamento
 
 
+            REGRAS:
+
+            - Se a mensagem contiver "Escalar o ticket TKT-XXXXX", extraia o ticketId
+
+            - Se não houver justification ou requestedBy, deixe em branco
+
+
             Retorne SOMENTE JSON:
 
-            {"ticketId":"TKT-00001","justification":"justificativa detalhada aqui","requestedBy":"user@empresa.com"}'
+            {"ticketId":"TKT-00001","justification":"","requestedBy":""}'
         - id: 5a3d1a3f-c922-4e70-a0b3-d79493de05a9
           role: user
           text: '{{#sys.query#}}'
@@ -2390,7 +2442,13 @@ workflow:
       type: custom
       width: 242
     - data:
-        answer: '{{#guardrail-escalate.guard_errors#}}'
+        answer: '📋 Para escalar o ticket, preciso das seguintes informações:
+
+
+          {{#1774424505602.mensagem#}}
+
+
+          Envie os dados no formato correto.'
         desc: ''
         selected: false
         title: Pedir Dados de Escalonamento
@@ -2404,10 +2462,10 @@ workflow:
       id: ans-ask-missing-esc
       position:
         x: 2841.491589358795
-        y: 1046.2915892984352
+        y: 1034.8230917846186
       positionAbsolute:
         x: 2841.491589358795
-        y: 1046.2915892984352
+        y: 1034.8230917846186
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -2434,7 +2492,7 @@ workflow:
         params: ''
         retry_config:
           max_retries: 3
-          retry_enabled: true
+          retry_enabled: false
           retry_interval: 100
         selected: false
         ssl_verify: true
@@ -2449,7 +2507,7 @@ workflow:
         type: http-request
         url: '{{#env.BACKEND_URL#}}/v1/ticket/escalate'
         variables: []
-      height: 157
+      height: 112
       id: http-escalate
       position:
         x: 2841.491589358795
@@ -2464,14 +2522,17 @@ workflow:
       width: 242
     - data:
         code: "function main({status_code, body}) {\n  var code = parseInt(String(status_code))\
-          \ || 0;\n  var ok = (code >= 200 && code < 300);\n  var safe = (body ||\
-          \ '')\n    .replace(/([a-zA-Z0-9._%+\\-]{3})[a-zA-Z0-9._%+\\-]*(@[a-zA-Z0-9.\\\
-          -]+\\.[a-zA-Z]{2,})/g, '$1***$2')\n    .replace(/\\d{2}\\.\\d{3}\\.\\d{3}\\\
+          \ || 0;\n  var ok = (code >= 200 && code < 300);\n  \n  // Se não for sucesso,\
+          \ retorna o body original sem mascarar\n  if (!ok) {\n    return {\n   \
+          \   is_success: 'false',\n      masked_body: body\n    };\n  }\n  \n  //\
+          \ Só aplica mascaramento se for sucesso\n  var safe = (body || '')\n   \
+          \ .replace(/([a-zA-Z0-9._%+\\-]{3})[a-zA-Z0-9._%+\\-]*@[a-zA-Z0-9.\\-]+\\\
+          .[a-zA-Z]{2,}/g, '$1***@***.***')\n    .replace(/\\d{2}\\.\\d{3}\\.\\d{3}\\\
           /\\d{4}-\\d{2}/g, '**.***.***/**01-**')\n    .replace(/\\((\\d{2})\\)\\\
-          s*\\d{4,5}-(\\d{4})/g, '(**) *****-$2')\n    .replace(/\"phone\"\\s*:\\\
+          s*\\d{4,5}-\\d{4}/g, '(**) *****-****')\n    .replace(/\"phone\"\\s*:\\\
           s*\"(\\d{2})\\d+(\\d{4})\"/g, '\"phone\":\"$1*****$2\"')\n    .replace(/\"\
-          cpf\"\\s*:\\s*\"\\d{3}\\.\\d{3}\\.\\d{3}-(\\d{2})\"/g, '\"cpf\":\"***.***.***-$1\"\
-          ');\n  return {\n    is_success: ok ? 'true' : 'false',\n    masked_body:\
+          cpf\"\\s*:\\s*\"\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}\"/g, '\"cpf\":\"***.***.***-**\"\
+          ');\n  \n  return {\n    is_success: ok ? 'true' : 'false',\n    masked_body:\
           \ safe\n  };\n}"
         code_language: javascript
         desc: ''
@@ -2512,10 +2573,11 @@ workflow:
         - case_id: case-escalate-ok
           conditions:
           - comparison_operator: is
-            value: 'true'
+            value: success
+            varType: string
             variable_selector:
-            - check-http-escalate
-            - is_success
+            - '1774443069170'
+            - status
           id: case-escalate-ok
           logical_operator: and
         desc: ''
@@ -2526,10 +2588,10 @@ workflow:
       height: 124
       id: if-escalate-ok
       position:
-        x: 4296
+        x: 4596
         y: 843.5007517614258
       positionAbsolute:
-        x: 4296
+        x: 4596
         y: 843.5007517614258
       selected: false
       sourcePosition: right
@@ -2537,25 +2599,27 @@ workflow:
       type: custom
       width: 242
     - data:
-        answer: 'Desculpe, não consegui concluir essa operação agora. O serviço pode
-          estar temporariamente indisponível.
+        answer: '⚠️ **Ticket já escalado**
 
 
-          Tente novamente em alguns minutos. Se o problema continuar, avise o time
-          de suporte com o código: {{#sys.conversation_id#}}'
+          O ticket TKT-00132 já foi escalado anteriormente.
+
+
+          Não é necessário realizar nova ação. Se precisar de mais informações, consulte
+          o histórico do ticket.'
         desc: ''
         selected: false
-        title: Erro Escalonamento
+        title: ans-already-escalated
         type: answer
         variables: []
-      height: 200
+      height: 164
       id: ans-error-escalate
       position:
-        x: 5050.196542944758
-        y: 927.9083753700945
+        x: 6141.879243276314
+        y: 672.9630509709449
       positionAbsolute:
-        x: 5050.196542944758
-        y: 927.9083753700945
+        x: 6141.879243276314
+        y: 672.9630509709449
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -2801,6 +2865,8 @@ workflow:
 
           - **Dúvidas** — ex: "Como funciona o processo de escalonamento?"
 
+          - **Resumo** — ex: "Resumo do atendimento"
+
 
           Como posso ajudar?'
         desc: ''
@@ -2808,14 +2874,14 @@ workflow:
         title: Intenção Desconhecida
         type: answer
         variables: []
-      height: 324
+      height: 356
       id: ans-unknown
       position:
-        x: 1808
-        y: 1912
+        x: 1438.2474334922063
+        y: 2158.5017110051963
       positionAbsolute:
-        x: 1808
-        y: 1912
+        x: 1438.2474334922063
+        y: 2158.5017110051963
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -3035,10 +3101,10 @@ workflow:
       height: 103
       id: '1774311736000'
       position:
-        x: 5557.486448954291
+        x: 5715.0713432497505
         y: -954.9662002614755
       positionAbsolute:
-        x: 5557.486448954291
+        x: 5715.0713432497505
         y: -954.9662002614755
       selected: false
       sourcePosition: right
@@ -3165,10 +3231,10 @@ workflow:
       height: 103
       id: '17743702052110'
       position:
-        x: 5557.486448954291
+        x: 5715.0713432497505
         y: -500
       positionAbsolute:
-        x: 5557.486448954291
+        x: 5715.0713432497505
         y: -500
       selected: false
       sourcePosition: right
@@ -3237,10 +3303,10 @@ workflow:
       height: 103
       id: '17743704437030'
       position:
-        x: 5557.486448954291
+        x: 5760.093080203314
         y: -64
       positionAbsolute:
-        x: 5557.486448954291
+        x: 5760.093080203314
         y: -64
       selected: false
       sourcePosition: right
@@ -3312,11 +3378,11 @@ workflow:
       height: 103
       id: '17743713253710'
       position:
-        x: 5557.486448954291
-        y: 313.00236617202194
+        x: 5871.619666211949
+        y: 270.2505082020447
       positionAbsolute:
-        x: 5557.486448954291
-        y: 313.00236617202194
+        x: 5871.619666211949
+        y: 270.2505082020447
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -3358,10 +3424,10 @@ workflow:
       height: 52
       id: '17743714317700'
       position:
-        x: 5050.196542944758
+        x: 5350.196542944758
         y: 843.5007517614258
       positionAbsolute:
-        x: 5050.196542944758
+        x: 5350.196542944758
         y: 843.5007517614258
       selected: false
       sourcePosition: right
@@ -3381,11 +3447,11 @@ workflow:
       height: 103
       id: '17743714408550'
       position:
-        x: 5557.486448954291
-        y: 843.5007517614258
+        x: 6141.879243276314
+        y: 542.7663585772929
       positionAbsolute:
-        x: 5557.486448954291
-        y: 843.5007517614258
+        x: 6141.879243276314
+        y: 542.7663585772929
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -3450,11 +3516,11 @@ workflow:
       height: 103
       id: '17743717429330'
       position:
-        x: 5557.486448954291
-        y: 1368.3589339115895
+        x: 5841.879243276314
+        y: 1317.9198611936772
       positionAbsolute:
-        x: 5557.486448954291
-        y: 1368.3589339115895
+        x: 5841.879243276314
+        y: 1317.9198611936772
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -3578,7 +3644,7 @@ workflow:
       positionAbsolute:
         x: 5050.196542944758
         y: 1768.6929651308074
-      selected: true
+      selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
@@ -3947,14 +4013,14 @@ workflow:
         title: Triagem sem cliente
         type: answer
         variables: []
-      height: 107
+      height: 148
       id: ans-triage-no-customer
       position:
-        x: 1808
-        y: 1600
+        x: 1908.6053498158412
+        y: 1460.7002848703735
       positionAbsolute:
-        x: 1808
-        y: 1600
+        x: 1908.6053498158412
+        y: 1460.7002848703735
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -4114,12 +4180,12 @@ workflow:
           type: no-auth
         body:
           data:
-          - id: evt-customer-body
+          - id: key-value-38
             key: ''
             type: text
             value: '{"conversationId":"{{#sys.conversation_id#}}","intent":"GET_CUSTOMER","action":"consultar
-              cliente","customerId":"{{#parse-intent.customer_id#}}","result":"success"}'
-          type: raw-text
+              cliente","customerId":"{{#1774379485512.customer_id_clean#}}","result":"success"}'
+          type: json
         desc: ''
         headers: 'X-API-Key:{{#env.BACKEND_API_KEY#}}
 
@@ -4148,10 +4214,10 @@ workflow:
       height: 157
       id: evt-customer
       position:
-        x: 5303.841970949525
+        x: 6045.533495582155
         y: -954.9662002614755
       positionAbsolute:
-        x: 5303.841970949525
+        x: 6045.533495582155
         y: -954.9662002614755
       selected: false
       sourcePosition: right
@@ -4164,12 +4230,12 @@ workflow:
           type: no-auth
         body:
           data:
-          - id: evt-sla-body
+          - id: key-value-84
             key: ''
             type: text
             value: '{"conversationId":"{{#sys.conversation_id#}}","intent":"GET_SLA","action":"consultar
-              SLA do cliente","customerId":"{{#parse-intent.customer_id#}}","result":"success"}'
-          type: raw-text
+              SLA do cliente","customerId":"{{#1774380894849.customer_id_clean#}}","result":"success"}'
+          type: json
         desc: ''
         headers: 'X-API-Key:{{#env.BACKEND_API_KEY#}}
 
@@ -4198,11 +4264,11 @@ workflow:
       height: 157
       id: evt-sla
       position:
-        x: 5303.841970949525
-        y: -500
+        x: 6045.533495582155
+        y: -506.742650223933
       positionAbsolute:
-        x: 5303.841970949525
-        y: -500
+        x: 6045.533495582155
+        y: -506.742650223933
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -4214,12 +4280,12 @@ workflow:
           type: no-auth
         body:
           data:
-          - id: evt-ticket-body
+          - id: key-value-119
             key: ''
             type: text
             value: '{"conversationId":"{{#sys.conversation_id#}}","intent":"GET_TICKET","action":"consultar
-              ticket","ticketId":"{{#parse-intent.ticket_id#}}","result":"success"}'
-          type: raw-text
+              ticket","ticketId":"{{#1774380908747.ticket_id_clean#}}","result":"success"}'
+          type: json
         desc: ''
         headers: 'X-API-Key:{{#env.BACKEND_API_KEY#}}
 
@@ -4248,11 +4314,11 @@ workflow:
       height: 157
       id: evt-ticket
       position:
-        x: 5303.841970949525
-        y: -64
+        x: 6184.902000417752
+        y: -86.30531720172726
       positionAbsolute:
-        x: 5303.841970949525
-        y: -64
+        x: 6184.902000417752
+        y: -86.30531720172726
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -4264,11 +4330,10 @@ workflow:
           type: no-auth
         body:
           data:
-          - id: evt-create-body
+          - id: key-value-114
             key: ''
             type: text
-            value: '{"conversationId":"{{#sys.conversation_id#}}","intent":"CREATE_TICKET","action":"criar
-              ticket","customerId":"{{#guardrail-create.customer_id#}}","result":"success"}'
+            value: '{{#1774441116373.body_json#}}'
           type: raw-text
         desc: ''
         headers: 'X-API-Key:{{#env.BACKEND_API_KEY#}}
@@ -4298,11 +4363,11 @@ workflow:
       height: 157
       id: evt-create
       position:
-        x: 5303.841970949525
-        y: 313.00236617202194
+        x: 6903.930481195056
+        y: 270.2505082020447
       positionAbsolute:
-        x: 5303.841970949525
-        y: 313.00236617202194
+        x: 6903.930481195056
+        y: 270.2505082020447
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -4314,11 +4379,10 @@ workflow:
           type: no-auth
         body:
           data:
-          - id: evt-escalate-body
+          - id: key-value-16
             key: ''
             type: text
-            value: '{"conversationId":"{{#sys.conversation_id#}}","intent":"ESCALATE_TICKET","action":"escalar
-              ticket","ticketId":"{{#guardrail-escalate.ticket_id#}}","result":"success"}'
+            value: '{{#1774441592845.body_json#}}'
           type: raw-text
         desc: ''
         headers: 'X-API-Key:{{#env.BACKEND_API_KEY#}}
@@ -4348,11 +4412,11 @@ workflow:
       height: 157
       id: evt-escalate
       position:
-        x: 5303.841970949525
-        y: 843.5007517614258
+        x: 7187.4297305169
+        y: 691.0153956542624
       positionAbsolute:
-        x: 5303.841970949525
-        y: 843.5007517614258
+        x: 7187.4297305169
+        y: 691.0153956542624
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -4364,11 +4428,10 @@ workflow:
           type: no-auth
         body:
           data:
-          - id: evt-triage-body
+          - id: key-value-72
             key: ''
             type: text
-            value: '{"conversationId":"{{#sys.conversation_id#}}","intent":"TRIAGE","action":"triagem
-              de atendimento","customerId":"{{#parse-intent.customer_id#}}","result":"success"}'
+            value: '{{#1774440993570.body_json#}}'
           type: raw-text
         desc: ''
         headers: 'X-API-Key:{{#env.BACKEND_API_KEY#}}
@@ -4398,11 +4461,11 @@ workflow:
       height: 157
       id: evt-triage
       position:
-        x: 5303.841970949525
-        y: 1368.3589339115895
+        x: 6547.052630774484
+        y: 1317.9198611936772
       positionAbsolute:
-        x: 5303.841970949525
-        y: 1368.3589339115895
+        x: 6547.052630774484
+        y: 1317.9198611936772
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -4442,7 +4505,7 @@ workflow:
         type: http-request
         url: '{{#env.BACKEND_URL#}}/v1/conversation/summary?conversationId={{#sys.conversation_id#}}'
         variables: []
-      height: 157
+      height: 176
       id: http-summary
       position:
         x: 2841.491589358795
@@ -4459,11 +4522,13 @@ workflow:
         cases:
         - case_id: case-summary-ok
           conditions:
-          - comparison_operator: is
+          - comparison_operator: '='
             value: '200'
+            varType: number
             variable_selector:
             - http-summary
             - status_code
+          id: case-summary-ok
           logical_operator: and
         desc: ''
         logical_operator: and
@@ -4473,10 +4538,10 @@ workflow:
       height: 124
       id: check-summary
       position:
-        x: 3350
+        x: 3650
         y: 1900
       positionAbsolute:
-        x: 3350
+        x: 3650
         y: 1900
       selected: false
       sourcePosition: right
@@ -4484,93 +4549,437 @@ workflow:
       type: custom
       width: 242
     - data:
-        code: "function main({body}) {\n  try {\n    var d = JSON.parse(body).data;\n\
-          \    var lines = ['\\uD83D\\uDCCB *Resumo do Atendimento*', 'Conversa: '\
-          \ + d.conversationId, 'In\\xEDcio: ' + d.startedAt, 'Total de eventos:\
-          \ ' + d.totalEvents];\n    if (d.customersConsulted && d.customersConsulted.length)\
-          \ lines.push('Clientes consultados: ' + d.customersConsulted.join(', '));\n\
-          \    if (d.ticketsCreated && d.ticketsCreated.length) lines.push('Tickets\
-          \ criados: ' + d.ticketsCreated.join(', '));\n    if (d.ticketsEscalated\
-          \ && d.ticketsEscalated.length) lines.push('Tickets escalados: ' + d.ticketsEscalated.join(',\
-          \ '));\n    if (d.triagePerformed) lines.push('Triagem: realizada');\n  \
-          \  lines.push('', d.summary);\n    return { resposta: lines.join('\\n')\
-          \ };\n  } catch(e) { return { resposta: 'Erro ao processar resumo.' }; }\n\
-          }"
-        code_language: javascript
-        desc: ''
-        outputs:
-          resposta:
-            children: null
-            type: string
-        selected: false
-        title: Formatar Resumo
-        type: code
-        variables:
-        - value_selector:
-          - http-summary
-          - body
-          variable: body
-      height: 52
-      id: code-format-summary
-      position:
-        x: 3860
-        y: 1900
-      positionAbsolute:
-        x: 3860
-        y: 1900
-      selected: false
-      sourcePosition: right
-      targetPosition: left
-      type: custom
-      width: 242
-    - data:
-        answer: '{{#code-format-summary.resposta#}}'
-        desc: ''
-        selected: false
-        title: Resumo do Atendimento
-        type: answer
-        variables:
-        - value_selector:
-          - code-format-summary
-          - resposta
-          variable: output_val
-      height: 103
-      id: ans-summary
-      position:
-        x: 4370
-        y: 1900
-      positionAbsolute:
-        x: 4370
-        y: 1900
-      selected: false
-      sourcePosition: right
-      targetPosition: left
-      type: custom
-      width: 242
-    - data:
-        answer: 'Não encontrei nenhum evento registrado nesta conversa. Realize algumas
+        answer: Não encontrei nenhum evento registrado nesta conversa. Realize algumas
           ações primeiro (consultar cliente, abrir ticket, etc.) e solicite o resumo
-          novamente.'
+          novamente.
         desc: ''
         selected: false
         title: Sem Resumo
         type: answer
         variables: []
-      height: 151
+      height: 164
       id: ans-no-summary
       position:
-        x: 3860
+        x: 4160
         y: 2060
       positionAbsolute:
-        x: 3860
+        x: 4160
         y: 2060
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "function main({ masked_body }) {\n  try {\n    var obj = JSON.parse(masked_body\
+          \ || '{}');\n    \n    if (obj.success === true) {\n      return { status:\
+          \ 'success', message: '' };\n    }\n    \n    var errorCode = (obj.error\
+          \ && obj.error.code) || '';\n    var errorMsg = (obj.error && obj.error.message)\
+          \ || 'Erro desconhecido';\n    \n    if (errorCode === 'NOT_FOUND') {\n\
+          \      return { status: 'not_found', message: errorMsg };\n    }\n    \n\
+          \    return { status: 'error', message: errorMsg };\n  } catch(e) {\n  \
+          \  return { status: 'error', message: 'Erro ao processar resposta' };\n\
+          \  }\n}"
+        code_language: javascript
+        outputs:
+          message:
+            children: null
+            type: string
+          status:
+            children: null
+            type: string
+        selected: false
+        title: analisar_resposta_cliente
+        type: code
+        variables:
+        - value_selector:
+          - filter-customer
+          - masked_body
+          value_type: string
+          variable: masked_body
+      height: 52
+      id: '1774420120239'
+      position:
+        x: 3977.6438082000705
+        y: -779.6904225667301
+      positionAbsolute:
+        x: 3977.6438082000705
+        y: -779.6904225667301
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "function main({ guard_errors }) {\n  return { mensagem: guard_errors\
+          \ };\n}"
+        code_language: javascript
+        outputs:
+          mensagem:
+            children: null
+            type: string
+        selected: false
+        title: preparar_erros_create
+        type: code
+        variables:
+        - value_selector:
+          - guardrail-create
+          - guard_errors
+          value_type: string
+          variable: guard_errors
+      height: 52
+      id: '1774423312177'
+      position:
+        x: 2757.9353931867026
+        y: 516.0969034908809
+      positionAbsolute:
+        x: 2757.9353931867026
+        y: 516.0969034908809
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "function main({ guard_errors }) {\n  return { mensagem: guard_errors\
+          \ };\n}"
+        code_language: javascript
+        outputs:
+          mensagem:
+            children: null
+            type: string
+        selected: false
+        title: preparar_erros_esc
+        type: code
+        variables:
+        - value_selector:
+          - guardrail-escalate
+          - guard_errors
+          value_type: string
+          variable: guard_errors
+      height: 52
+      id: '1774424505602'
+      position:
+        x: 2554.3119392831168
+        y: 949.6285388248382
+      positionAbsolute:
+        x: 2554.3119392831168
+        y: 949.6285388248382
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: '{{#17744396780480.resposta_resumo_atendimento#}}'
+        selected: false
+        title: Resposta Resumo Atendimento
+        type: answer
+        variables:
+        - value_selector:
+          - '17743116666410'
+          - resposta_cliente
+          variable: output_val
+      height: 103
+      id: '17744395807700'
+      position:
+        x: 4796.40972143552
+        y: 2120.048642338669
+      positionAbsolute:
+        x: 4796.40972143552
+        y: 2120.048642338669
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "function main({ masked_body }) {\n  try {\n    var obj = JSON.parse(masked_body\
+          \ || '{}');\n    \n    if (!obj.success) {\n      var msg = (obj.error &&\
+          \ obj.error.message) ? obj.error.message : 'Erro desconhecido.';\n     \
+          \ return { resposta_resumo_atendimento: 'Não foi possível exibir o resumo.\\\
+          n\\n' + msg };\n    }\n    \n    var d = obj.data;\n    var lines = ['\U0001F4CB\
+          \ **Resumo do Atendimento**'];\n    lines.push('Conversa: ' + (d.conversationId\
+          \ || '-'));\n    lines.push('Início: ' + (d.startedAt || '-'));\n    lines.push('Total\
+          \ de eventos: ' + (d.totalEvents || '0'));\n    \n    if (d.customersConsulted\
+          \ && d.customersConsulted.length) {\n      lines.push('Clientes consultados:\
+          \ ' + d.customersConsulted.join(', '));\n    }\n    \n    if (d.ticketsCreated\
+          \ && d.ticketsCreated.length) {\n      lines.push('Tickets criados: ' +\
+          \ d.ticketsCreated.join(', '));\n    }\n    \n    if (d.ticketsEscalated\
+          \ && d.ticketsEscalated.length) {\n      lines.push('Tickets escalados:\
+          \ ' + d.ticketsEscalated.join(', '));\n    }\n    \n    if (d.triagePerformed)\
+          \ {\n      lines.push('Triagem: realizada');\n    }\n    \n    lines.push('',\
+          \ d.summary || 'Nenhum resumo disponível.');\n    \n    return { resposta_resumo_atendimento:\
+          \ lines.join('\\n') };\n  } catch(e) {\n    return { resposta_resumo_atendimento:\
+          \ 'Erro ao processar resumo: ' + e.message };\n  }\n}"
+        code_language: javascript
+        desc: ''
+        outputs:
+          resposta_resumo_atendimento:
+            children: null
+            type: string
+        selected: false
+        title: code_format_resumo_atendimento
+        type: code
+        variables:
+        - value_selector:
+          - http-summary
+          - body
+          value_type: string
+          variable: masked_body
+      height: 52
+      id: '17744396780480'
+      position:
+        x: 4146.106072818064
+        y: 1982.1506844681312
+      positionAbsolute:
+        x: 4146.106072818064
+        y: 1982.1506844681312
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "function main({ conversation_id, customer_id }) {\n  var body = {\n\
+          \    conversationId: conversation_id,\n    intent: \"TRIAGE\",\n    action:\
+          \ \"triagem de atendimento\",\n    customerId: customer_id,\n    result:\
+          \ \"success\"\n  };\n  return { body_json: JSON.stringify(body) };\n}"
+        code_language: javascript
+        outputs:
+          body_json:
+            children: null
+            type: string
+        selected: false
+        title: montar_evento_triage
+        type: code
+        variables:
+        - value_selector:
+          - sys
+          - conversation_id
+          value_type: string
+          variable: conversation_id
+        - value_selector:
+          - validate-triage-customer
+          - customer_id_clean
+          value_type: string
+          variable: customer_id
+      height: 52
+      id: '1774440993570'
+      position:
+        x: 6247.052630774484
+        y: 1317.9198611936772
+      positionAbsolute:
+        x: 6247.052630774484
+        y: 1317.9198611936772
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "function main({ conversation_id, customer_id }) {\n  var body = {\n\
+          \    conversationId: conversation_id,\n    intent: \"CREATE_TICKET\",\n\
+          \    action: \"criar ticket\",\n    customerId: customer_id,\n    result:\
+          \ \"success\"\n  };\n  return { body_json: JSON.stringify(body) };\n}"
+        code_language: javascript
+        outputs:
+          body_json:
+            children: null
+            type: string
+        selected: false
+        title: montar_evento_create
+        type: code
+        variables:
+        - value_selector:
+          - sys
+          - conversation_id
+          value_type: string
+          variable: conversation_id
+        - value_selector:
+          - guardrail-create
+          - customer_id
+          value_type: string
+          variable: customer_id
+      height: 52
+      id: '1774441116373'
+      position:
+        x: 6603.930481195056
+        y: 270.2505082020447
+      positionAbsolute:
+        x: 6603.930481195056
+        y: 270.2505082020447
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "function main({ conversation_id, ticket_id }) {\n  var body = {\n \
+          \   conversationId: conversation_id,\n    intent: \"ESCALATE_TICKET\",\n\
+          \    action: \"escalar ticket\",\n    ticketId: ticket_id,\n    result:\
+          \ \"success\"\n  };\n  return { body_json: JSON.stringify(body) };\n}"
+        code_language: javascript
+        outputs:
+          body_json:
+            children: null
+            type: string
+        selected: false
+        title: montar_evento_escalate
+        type: code
+        variables:
+        - value_selector:
+          - sys
+          - conversation_id
+          value_type: string
+          variable: conversation_id
+        - value_selector:
+          - guardrail-escalate
+          - ticket_id
+          value_type: string
+          variable: ticket_id
+      height: 52
+      id: '1774441592845'
+      position:
+        x: 6887.4297305169
+        y: 691.0153956542624
+      positionAbsolute:
+        x: 6887.4297305169
+        y: 691.0153956542624
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "function main({ masked_body }) {\n  try {\n    var obj = JSON.parse(masked_body\
+          \ || '{}');\n    \n    if (obj.success === true) {\n      return { status:\
+          \ 'success', message: '' };\n    }\n    \n    var errorCode = (obj.error\
+          \ && obj.error.code) || '';\n    var errorMsg = (obj.error && obj.error.message)\
+          \ || 'Erro desconhecido';\n    \n    if (errorCode === 'ALREADY_ESCALATED')\
+          \ {\n      return { status: 'already_escalated', message: errorMsg };\n\
+          \    }\n    \n    if (errorCode === 'TICKET_CLOSED') {\n      return { status:\
+          \ 'ticket_closed', message: errorMsg };\n    }\n    \n    return { status:\
+          \ 'error', message: errorMsg };\n  } catch(e) {\n    return { status: 'error',\
+          \ message: 'Erro ao processar resposta' };\n  }\n}"
+        code_language: javascript
+        outputs:
+          message:
+            children: null
+            type: string
+          status:
+            children: null
+            type: string
+        selected: false
+        title: analisar_erro_escalate
+        type: code
+        variables:
+        - value_selector:
+          - check-http-escalate
+          - masked_body
+          value_type: string
+          variable: masked_body
+      height: 52
+      id: '1774443069170'
+      position:
+        x: 4296
+        y: 843.5007517614258
+      positionAbsolute:
+        x: 4296
+        y: 843.5007517614258
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: is
+            id: 1b137c11-9561-4aee-9e2e-9929269b1265
+            value: already_escalated
+            varType: string
+            variable_selector:
+            - '1774443069170'
+            - status
+          id: 'true'
+          logical_operator: and
+        - case_id: 31f5fa4a-db50-4437-972a-6068152a4f4f
+          conditions:
+          - comparison_operator: is
+            id: 97b912a9-5717-4450-bda6-3feae8ad4d44
+            value: ticket_closed
+            varType: string
+            variable_selector:
+            - '1774443069170'
+            - status
+          id: 31f5fa4a-db50-4437-972a-6068152a4f4f
+          logical_operator: and
+        selected: false
+        title: tipo_erro_escalate
+        type: if-else
+      height: 172
+      id: '1774443398681'
+      position:
+        x: 5350.196542944758
+        y: 927.9083753700945
+      positionAbsolute:
+        x: 5350.196542944758
+        y: 927.9083753700945
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: '⚠️ **Ticket não pode ser escalado**
+
+
+          O ticket informado está fechado ou resolvido.
+
+
+          Apenas tickets com status "open" ou "in_progress" podem ser escalados.'
+        selected: false
+        title: ans-ticket-closed
+        type: answer
+        variables: []
+      height: 164
+      id: '1774443667659'
+      position:
+        x: 6141.879243276314
+        y: 874.675825436765
+      positionAbsolute:
+        x: 6141.879243276314
+        y: 874.675825436765
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: 'Desculpe, não consegui concluir essa operação agora. O serviço pode
+          estar temporariamente indisponível.
+
+
+          Tente novamente em alguns minutos. Se o problema continuar, avise o time
+          de suporte com o código: {{#sys.conversation_id#}}'
+        selected: false
+        title: ans-error-escalate
+        type: answer
+        variables: []
+      height: 200
+      id: '1774443670661'
+      position:
+        x: 6141.879243276314
+        y: 1062.6678728164536
+      positionAbsolute:
+        x: 6141.879243276314
+        y: 1062.6678728164536
       selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
       width: 242
     viewport:
-      x: 270.5821730306352
-      y: 259.38863629630447
-      zoom: 0.25
+      x: -3341.616060186037
+      y: -408.08018082342824
+      zoom: 0.5629253798721232
   rag_pipeline_variables: []
