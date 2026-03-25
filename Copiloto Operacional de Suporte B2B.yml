@@ -3654,14 +3654,7 @@ workflow:
       type: custom
       width: 242
     - data:
-        answer: '❌ Não foi possível realizar a consulta.
-
-
-          {{#1774379485512.message#}}
-
-
-          Verifique o ID e tente novamente. Exemplo: CUST-001 para cliente ou TKT-00001
-          para ticket.'
+        answer: '{{#1774379485512.message#}}'
         selected: false
         title: erro_id_cliente
         type: answer
@@ -3670,7 +3663,7 @@ workflow:
           - '1774379485512'
           - message
           variable: output_val
-      height: 152
+      height: 103
       id: '1774379922763'
       position:
         x: 2841.491589358795
@@ -3826,14 +3819,7 @@ workflow:
       type: custom
       width: 242
     - data:
-        answer: '❌ Não foi possível realizar a consulta.
-
-
-          {{#1774380894849.message#}}
-
-
-          Verifique o ID e tente novamente. Exemplo: CUST-001 para cliente ou TKT-00001
-          para ticket.'
+        answer: '{{#1774380894849.message#}}'
         selected: false
         title: erro_id_sla
         type: answer
@@ -3842,7 +3828,7 @@ workflow:
           - '1774380894849'
           - message
           variable: output_val
-      height: 167
+      height: 103
       id: '17743809863970'
       position:
         x: 2841.491589358795
@@ -3856,14 +3842,7 @@ workflow:
       type: custom
       width: 242
     - data:
-        answer: '❌ Não foi possível realizar a consulta.
-
-
-          {{#1774380908747.message#}}
-
-
-          Verifique o ID e tente novamente. Exemplo: CUST-001 para cliente ou TKT-00001
-          para ticket.'
+        answer: '{{#1774380908747.message#}}'
         selected: false
         title: erro_id_ticket
         type: answer
@@ -3872,7 +3851,7 @@ workflow:
           - '1774380908747'
           - message
           variable: output_val
-      height: 167
+      height: 103
       id: '17743809922790'
       position:
         x: 2841.491589358795
