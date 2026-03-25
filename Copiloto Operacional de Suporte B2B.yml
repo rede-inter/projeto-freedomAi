@@ -3891,10 +3891,14 @@ workflow:
         cases:
         - case_id: case-has-customer
           conditions:
-          - comparison_operator: is not empty
+          - comparison_operator: is not
+            id: check-triage-customer-cond-1
+            value: ''
+            varType: string
             variable_selector:
             - parse-intent
             - customer_id
+          id: case-has-customer
           logical_operator: and
         desc: ''
         logical_operator: and
