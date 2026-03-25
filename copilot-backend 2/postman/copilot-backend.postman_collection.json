@@ -1,0 +1,635 @@
+{
+  "info": {
+    "name": "Copiloto Operacional de Suporte",
+    "description": "Coleção completa do backend. Inclui todos os endpoints, exemplos de erro e simulação de falhas.\n\nConfigurar a variável de ambiente `baseUrl` e `apiKey` antes de usar.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "copilot-backend-v1"
+  },
+  "variable": [
+    { "key": "baseUrl",       "value": "http://localhost:3000" },
+    { "key": "apiKey",        "value": "dev-secret-key-change-in-production" },
+    { "key": "convId",        "value": "postman-conv-001" },
+    { "key": "lastTicketId",  "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "GET /health",
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('status ok', () => pm.expect(pm.response.json().status).to.eql('ok'));",
+              "pm.test('has uptime', () => pm.expect(pm.response.json().uptime).to.be.a('number'));"
+            ]}
+          }],
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/health" }
+          }
+        },
+        {
+          "name": "GET /ready",
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('ready true', () => pm.expect(pm.response.json().ready).to.be.true);"
+            ]}
+          }],
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/ready" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Customer",
+      "item": [
+        {
+          "name": "GET /v1/customer/CUST-001 (enterprise active)",
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "const b = pm.response.json();",
+              "pm.test('success true', () => pm.expect(b.success).to.be.true);",
+              "pm.test('id correct', () => pm.expect(b.data.id).to.eql('CUST-001'));",
+              "pm.test('email masked', () => pm.expect(b.data.email).to.include('***'));",
+              "pm.test('cnpj masked', () => pm.expect(b.data.cnpj).to.include('**'));",
+              "pm.test('no raw cnpj', () => pm.expect(b.data.cnpj).to.not.eql('12.345.678/0001-90'));"
+            ]}
+          }],
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}" },
+              { "key": "X-Conversation-Id", "value": "{{convId}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/v1/customer/CUST-001" }
+          }
+        },
+        {
+          "name": "GET /v1/customer/CUST-004 (suspended)",
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200 — query still works', () => pm.response.to.have.status(200));",
+              "pm.test('status suspended', () => pm.expect(pm.response.json().data.status).to.eql('suspended'));"
+            ]}
+          }],
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/v1/customer/CUST-004" }
+          }
+        },
+        {
+          "name": "GET /v1/customer/CUST-999 → 404",
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 404', () => pm.response.to.have.status(404));",
+              "pm.test('code NOT_FOUND', () => pm.expect(pm.response.json().error.code).to.eql('CUSTOMER_NOT_FOUND'));",
+              "pm.test('has requestId', () => pm.expect(pm.response.json().error.requestId).to.be.a('string'));"
+            ]}
+          }],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-API-Key", "value": "{{apiKey}}" }],
+            "url": { "raw": "{{baseUrl}}/v1/customer/CUST-999" }
+          }
+        },
+        {
+          "name": "GET /v1/customer/:id → 401 (no key)",
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 401', () => pm.response.to.have.status(401));",
+              "pm.test('code UNAUTHORIZED', () => pm.expect(pm.response.json().error.code).to.eql('UNAUTHORIZED'));"
+            ]}
+          }],
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/v1/customer/CUST-001" }
+          }
+        },
+        {
+          "name": "GET /v1/customer/:id → 400 (invalid id format)",
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 400', () => pm.response.to.have.status(400));",
+              "pm.test('code INVALID_CUSTOMER_ID', () => pm.expect(pm.response.json().error.code).to.eql('INVALID_CUSTOMER_ID'));"
+            ]}
+          }],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-API-Key", "value": "{{apiKey}}" }],
+            "url": { "raw": "{{baseUrl}}/v1/customer/invalid-format" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "SLA",
+      "item": [
+        {
+          "name": "GET /v1/customer/CUST-001/sla (enterprise)",
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "const d = pm.response.json().data;",
+              "pm.test('plan enterprise', () => pm.expect(d.plan).to.eql('enterprise'));",
+              "pm.test('P1 = 1h', () => pm.expect(d.responseTimeP1Hours).to.eql(1));",
+              "pm.test('24x7 support', () => pm.expect(d.supportHours).to.eql('24x7'));",
+              "pm.test('no slaExpired', () => pm.expect(d.extraFields?.slaExpired).to.be.undefined);"
+            ]}
+          }],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-API-Key", "value": "{{apiKey}}" }],
+            "url": { "raw": "{{baseUrl}}/v1/customer/CUST-001/sla" }
+          }
+        },
+        {
+          "name": "GET /v1/customer/CUST-EXP/sla (expired SLA flag)",
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('slaExpired flag true', () => pm.expect(pm.response.json().data.extraFields.slaExpired).to.be.true);"
+            ]}
+          }],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-API-Key", "value": "{{apiKey}}" }],
+            "url": { "raw": "{{baseUrl}}/v1/customer/CUST-EXP/sla" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Tickets",
+      "item": [
+        {
+          "name": "GET /v1/ticket/TKT-00001 (open)",
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "const d = pm.response.json().data;",
+              "pm.test('id correct', () => pm.expect(d.id).to.eql('TKT-00001'));",
+              "pm.test('no _hash exposed', () => pm.expect(d._hash).to.be.undefined);",
+              "pm.test('has slaDeadline', () => pm.expect(d.slaDeadline).to.be.a('string'));"
+            ]}
+          }],
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}" },
+              { "key": "X-Conversation-Id", "value": "{{convId}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/v1/ticket/TKT-00001" }
+          }
+        },
+        {
+          "name": "GET /v1/ticket/TKT-00003 (already escalated)",
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "const d = pm.response.json().data;",
+              "pm.test('escalated=true', () => pm.expect(d.escalated).to.be.true);",
+              "pm.test('priority P1', () => pm.expect(d.priority).to.eql('P1'));"
+            ]}
+          }],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-API-Key", "value": "{{apiKey}}" }],
+            "url": { "raw": "{{baseUrl}}/v1/ticket/TKT-00003" }
+          }
+        },
+        {
+          "name": "GET /v1/ticket/TKT-99999 → 404",
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 404', () => pm.response.to.have.status(404));",
+              "pm.test('TICKET_NOT_FOUND', () => pm.expect(pm.response.json().error.code).to.eql('TICKET_NOT_FOUND'));"
+            ]}
+          }],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-API-Key", "value": "{{apiKey}}" }],
+            "url": { "raw": "{{baseUrl}}/v1/ticket/TKT-99999" }
+          }
+        },
+        {
+          "name": "POST /v1/ticket — outage P1 auto-calculated",
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 201', () => pm.response.to.have.status(201));",
+              "const d = pm.response.json().data;",
+              "pm.test('priority P1', () => pm.expect(d.priority).to.eql('P1'));",
+              "pm.test('auto assigned', () => pm.expect(d.priorityAutoAssigned).to.be.true);",
+              "pm.test('not overridden', () => pm.expect(d.priorityOverridden).to.be.false);",
+              "pm.test('status open', () => pm.expect(d.status).to.eql('open'));",
+              "pm.test('has slaDeadline', () => pm.expect(d.slaDeadline).to.be.a('string'));",
+              "pm.test('no _hash', () => pm.expect(d._hash).to.be.undefined);",
+              "pm.collectionVariables.set('lastTicketId', d.id);",
+              "pm.test('message present', () => pm.expect(d.message).to.eql('Ticket criado com sucesso.'));"
+            ]}
+          }],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}" },
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-Conversation-Id", "value": "{{convId}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": \"CUST-001\",\n  \"title\": \"Checkout completamente fora do ar em producao\",\n  \"description\": \"Sistema de checkout indisponivel desde as 09h30. Todas as transacoes estao falhando com erro 500. Impacto em 100% dos usuarios.\",\n  \"category\": \"outage\",\n  \"reporterEmail\": \"ops@alpha.com.br\",\n  \"affectedUsers\": 500,\n  \"impactLevel\": \"critical\",\n  \"tags\": [\"checkout\", \"producao\", \"critico\"]\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/v1/ticket" }
+          }
+        },
+        {
+          "name": "POST /v1/ticket — question P4",
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 201', () => pm.response.to.have.status(201));",
+              "pm.test('priority P4', () => pm.expect(pm.response.json().data.priority).to.eql('P4'));"
+            ]}
+          }],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": \"CUST-002\",\n  \"title\": \"Como exportar dados para Excel\",\n  \"description\": \"Preciso de orientacao sobre como exportar os dados do relatorio mensal para formato Excel. Nao encontrei esta opcao no menu.\",\n  \"category\": \"question\",\n  \"reporterEmail\": \"user@betatec.com.br\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/v1/ticket" }
+          }
+        },
+        {
+          "name": "POST /v1/ticket — priority override (sent P4, calculated P2)",
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 201', () => pm.response.to.have.status(201));",
+              "const d = pm.response.json().data;",
+              "pm.test('priority P4 (overridden)', () => pm.expect(d.priority).to.eql('P4'));",
+              "pm.test('priorityOverridden true', () => pm.expect(d.priorityOverridden).to.be.true);",
+              "pm.test('not auto assigned', () => pm.expect(d.priorityAutoAssigned).to.be.false);"
+            ]}
+          }],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": \"CUST-001\",\n  \"title\": \"Bug no modulo de importacao de dados\",\n  \"description\": \"O modulo de importacao de CSV esta rejeitando arquivos validos com caracteres acentuados no cabecalho. Ocorre apenas com codificacao UTF-8.\",\n  \"category\": \"bug\",\n  \"reporterEmail\": \"dev@alpha.com.br\",\n  \"impactLevel\": \"high\",\n  \"priority\": \"P4\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/v1/ticket" }
+          }
+        },
+        {
+          "name": "POST /v1/ticket → 409 duplicate (run after outage ticket above)",
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 409', () => pm.response.to.have.status(409));",
+              "const e = pm.response.json().error;",
+              "pm.test('DUPLICATE_TICKET', () => pm.expect(e.code).to.eql('DUPLICATE_TICKET'));",
+              "pm.test('existing id in details', () => pm.expect(e.details.existingTicketId).to.be.a('string'));"
+            ]}
+          }],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": \"CUST-001\",\n  \"title\": \"Checkout completamente fora do ar em producao\",\n  \"description\": \"Sistema de checkout indisponivel desde as 09h30. Todas as transacoes estao falhando com erro 500. Impacto em 100% dos usuarios.\",\n  \"category\": \"outage\",\n  \"reporterEmail\": \"ops@alpha.com.br\",\n  \"affectedUsers\": 500,\n  \"impactLevel\": \"critical\",\n  \"tags\": [\"checkout\", \"producao\", \"critico\"]\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/v1/ticket" }
+          }
+        },
+        {
+          "name": "POST /v1/ticket → 400 title too short",
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 400', () => pm.response.to.have.status(400));",
+              "pm.test('VALIDATION_ERROR', () => pm.expect(pm.response.json().error.code).to.eql('VALIDATION_ERROR'));",
+              "const details = pm.response.json().error.details;",
+              "pm.test('title error in details', () => pm.expect(details.some(d => d.field === 'title')).to.be.true);"
+            ]}
+          }],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": \"CUST-001\",\n  \"title\": \"bug\",\n  \"description\": \"Descricao longa suficiente para passar na validacao de comprimento minimo.\",\n  \"category\": \"bug\",\n  \"reporterEmail\": \"ops@alpha.com.br\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/v1/ticket" }
+          }
+        },
+        {
+          "name": "POST /v1/ticket → 400 description too short",
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 400', () => pm.response.to.have.status(400));",
+              "const details = pm.response.json().error.details;",
+              "pm.test('description error', () => pm.expect(details.some(d => d.field === 'description')).to.be.true);"
+            ]}
+          }],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": \"CUST-001\",\n  \"title\": \"Titulo valido com mais de 10 chars\",\n  \"description\": \"curta\",\n  \"category\": \"bug\",\n  \"reporterEmail\": \"ops@alpha.com.br\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/v1/ticket" }
+          }
+        },
+        {
+          "name": "POST /v1/ticket → 403 customer suspended",
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 403', () => pm.response.to.have.status(403));",
+              "pm.test('FORBIDDEN', () => pm.expect(pm.response.json().error.code).to.eql('FORBIDDEN'));"
+            ]}
+          }],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": \"CUST-004\",\n  \"title\": \"Titulo valido com mais de 10 chars\",\n  \"description\": \"Descricao longa suficiente para passar na validacao de comprimento minimo obrigatorio.\",\n  \"category\": \"bug\",\n  \"reporterEmail\": \"ops@delta.com.br\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/v1/ticket" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Escalate",
+      "item": [
+        {
+          "name": "POST /v1/ticket/TKT-00001/escalate → 200",
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "const d = pm.response.json().data;",
+              "pm.test('escalated=true', () => pm.expect(d.escalated).to.be.true);",
+              "pm.test('priority P1', () => pm.expect(d.priority).to.eql('P1'));",
+              "pm.test('escalatedBy set', () => pm.expect(d.escalatedBy).to.eql('gerente@alpha.com.br'));",
+              "pm.test('escalatedAt set', () => pm.expect(d.escalatedAt).to.be.a('string'));"
+            ]}
+          }],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}" },
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-Conversation-Id", "value": "{{convId}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"justification\": \"Impacto critico em producao afetando 500 usuarios. SLA em risco de violacao.\",\n  \"requestedBy\": \"gerente@alpha.com.br\",\n  \"newPriority\": \"P1\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/v1/ticket/TKT-00001/escalate" }
+          }
+        },
+        {
+          "name": "POST /v1/ticket/TKT-00003/escalate → 409 already escalated",
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 409', () => pm.response.to.have.status(409));",
+              "pm.test('ALREADY_ESCALATED', () => pm.expect(pm.response.json().error.code).to.eql('ALREADY_ESCALATED'));",
+              "pm.test('details has escalatedAt', () => pm.expect(pm.response.json().error.details.escalatedAt).to.be.a('string'));"
+            ]}
+          }],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"justification\": \"Tentando escalar novamente porem ja foi escalado antes.\",\n  \"requestedBy\": \"ops@betatec.com.br\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/v1/ticket/TKT-00003/escalate" }
+          }
+        },
+        {
+          "name": "POST /v1/ticket/TKT-00005/escalate → 409 ticket closed",
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 409', () => pm.response.to.have.status(409));",
+              "pm.test('TICKET_CLOSED', () => pm.expect(pm.response.json().error.code).to.eql('TICKET_CLOSED'));"
+            ]}
+          }],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"justification\": \"Tentativa de escalar ticket fechado — deve ser rejeitada.\",\n  \"requestedBy\": \"ops@alpha.com.br\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/v1/ticket/TKT-00005/escalate" }
+          }
+        },
+        {
+          "name": "POST /v1/ticket/:id/escalate → 400 justification too short",
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 400', () => pm.response.to.have.status(400));",
+              "const details = pm.response.json().error.details;",
+              "pm.test('justification error', () => pm.expect(details.some(d => d.field === 'justification')).to.be.true);"
+            ]}
+          }],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"justification\": \"curta\",\n  \"requestedBy\": \"ops@alpha.com.br\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/v1/ticket/TKT-00002/escalate" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Triage",
+      "item": [
+        {
+          "name": "POST /v1/triage — outage critical → P1",
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "const d = pm.response.json().data;",
+              "pm.test('P1 suggested', () => pm.expect(d.suggestedPriority).to.eql('P1'));",
+              "pm.test('slaResponseHours = 1', () => pm.expect(d.slaResponseHours).to.eql(1));",
+              "pm.test('has actions', () => pm.expect(d.recommendedActions.length).to.be.above(0));",
+              "pm.test('has summary', () => pm.expect(d.summary).to.include('CUST-001'));",
+              "pm.test('has reason', () => pm.expect(d.priorityReason).to.be.a('string'));"
+            ]}
+          }],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}" },
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-Conversation-Id", "value": "{{convId}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": \"CUST-001\",\n  \"category\": \"outage\",\n  \"impactLevel\": \"critical\",\n  \"affectedUsers\": 500,\n  \"description\": \"Sistema de checkout completamente indisponivel desde as 09h. Nenhuma transacao esta sendo processada.\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/v1/triage" }
+          }
+        },
+        {
+          "name": "POST /v1/triage — question low → P4",
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('P4 suggested', () => pm.expect(pm.response.json().data.suggestedPriority).to.eql('P4'));"
+            ]}
+          }],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": \"CUST-002\",\n  \"category\": \"question\",\n  \"impactLevel\": \"low\",\n  \"affectedUsers\": 1,\n  \"description\": \"Duvida sobre configuracao do modulo de exportacao de dados.\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/v1/triage" }
+          }
+        },
+        {
+          "name": "POST /v1/triage → 404 customer not found",
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 404', () => pm.response.to.have.status(404));",
+              "pm.test('CUSTOMER_NOT_FOUND', () => pm.expect(pm.response.json().error.code).to.eql('CUSTOMER_NOT_FOUND'));"
+            ]}
+          }],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": \"CUST-999\",\n  \"category\": \"outage\",\n  \"impactLevel\": \"critical\",\n  \"affectedUsers\": 100,\n  \"description\": \"Sistema completamente indisponivel para todos os usuarios.\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/v1/triage" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Failure Simulation",
+      "item": [
+        {
+          "name": "?simulate=error → 503",
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 503', () => pm.response.to.have.status(503));",
+              "pm.test('UPSTREAM_UNAVAILABLE', () => pm.expect(pm.response.json().error.code).to.eql('UPSTREAM_UNAVAILABLE'));"
+            ]}
+          }],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-API-Key", "value": "{{apiKey}}" }],
+            "url": { "raw": "{{baseUrl}}/v1/customer/CUST-001?simulate=error" }
+          }
+        },
+        {
+          "name": "?simulate=timeout → 504",
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 504', () => pm.response.to.have.status(504));",
+              "pm.test('UPSTREAM_TIMEOUT', () => pm.expect(pm.response.json().error.code).to.eql('UPSTREAM_TIMEOUT'));"
+            ]}
+          }],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-API-Key", "value": "{{apiKey}}" }],
+            "url": { "raw": "{{baseUrl}}/v1/customer/CUST-001?simulate=timeout" }
+          }
+        },
+        {
+          "name": "?simulate=latency → 200 (delayed)",
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('Took at least 3s', () => pm.expect(pm.response.responseTime).to.be.above(2900));"
+            ]}
+          }],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-API-Key", "value": "{{apiKey}}" }],
+            "url": { "raw": "{{baseUrl}}/v1/customer/CUST-001?simulate=latency" }
+          }
+        }
+      ]
+    }
+  ]
+}

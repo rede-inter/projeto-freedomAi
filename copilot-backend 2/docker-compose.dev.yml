@@ -1,0 +1,21 @@
+version: '3.9'
+
+# Extend the base compose for local development
+# Usage: docker compose -f docker-compose.yml -f docker-compose.dev.yml up
+
+services:
+  backend:
+    build:
+      context: .
+      target: builder   # uses the builder stage (has devDependencies)
+    command: npm run dev
+    volumes:
+      - ./src:/app/src:ro
+      - ./tests:/app/tests:ro
+    environment:
+      NODE_ENV: development
+      LOG_LEVEL: info
+      USE_MOCK_APIS: 'true'
+    ports:
+      - '3000:3000'
+      - '9229:9229'   # Node.js debugger

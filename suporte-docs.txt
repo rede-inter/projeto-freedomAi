@@ -1,0 +1,67 @@
+PROCESSO DE ESCALONAMENTO
+Um ticket pode ser escalado quando o problema impacta severamente o negócio do cliente.
+Para escalar, informe o ID do ticket (formato TKT-NNNNN), uma justificativa detalhada
+com mínimo de 20 caracteres explicando o motivo do escalonamento, e seu email.
+Tickets com status "closed" ou "resolved" não podem ser escalados.
+Tickets já escalados não podem ser escalados novamente.
+
+PRIORIDADES DE ATENDIMENTO
+P1 - Crítico: outage total ou impacto crítico. Tempo de resposta: 1 hora.
+P2 - Alto: impacto severo em múltiplos usuários ou cliente enterprise. Tempo de resposta: 4 horas.
+P3 - Médio: degradação parcial ou bug em usuário isolado. Tempo de resposta: 8 horas.
+P4 - Baixo: dúvidas, solicitações de funcionalidade, melhorias. Tempo de resposta: 24 horas.
+
+REGRAS DE PRIORIDADE AUTOMÁTICA
+- Outage + impacto crítico = P1
+- Outage + 100 ou mais usuários afetados = P1
+- Outage + impacto alto ou médio = P2
+- Bug + impacto crítico = P2
+- Bug + impacto alto + cliente enterprise = P2
+- Bug + impacto alto + cliente não-enterprise = P3
+- Feature ou question = P4
+- Cliente enterprise com bug = mínimo P2
+- Padrão = P3
+
+CATEGORIAS DE TICKET
+bug - erro ou falha no comportamento esperado do sistema
+feature - solicitação de nova funcionalidade ou melhoria
+question - dúvida sobre uso, configuração ou processo
+outage - indisponibilidade total ou parcial do serviço
+
+ABERTURA DE TICKET
+Para abrir um ticket são obrigatórios:
+- ID do cliente (formato CUST-XXX)
+- Título com 10 a 120 caracteres
+- Descrição detalhada com mínimo de 30 caracteres
+- Categoria: bug, feature, question ou outage
+- Email do responsável pelo reporte
+Tickets duplicados com mesmo conteúdo nos últimos 5 minutos são bloqueados automaticamente.
+
+CONSULTA DE CLIENTES
+Cada cliente possui um ID no formato CUST-XXX (ex: CUST-001, CUST-002).
+Clientes com status "suspended" não podem abrir novos tickets, mas podem ser consultados.
+Dados sensíveis como CNPJ, email e telefone são exibidos de forma mascarada por segurança.
+
+PLANOS DE SLA
+SLA Premium (clientes enterprise): P1=1h, P2=4h, P3=8h, P4=24h, suporte 24x7.
+SLA Standard (clientes mid): P1=4h, P2=8h, P3=12h, P4=48h, suporte 24x7.
+SLA Basic (clientes SMB): P1=8h, P2=12h, P3=24h, P4=72h, suporte 8x5.
+SLA expirado: o sistema indica a flag slaExpired e o atendimento pode ter penalidades.
+
+TRIAGEM
+A triagem analisa a situação descrita e sugere a prioridade adequada com base em:
+categoria do problema, nível de impacto (low/medium/high/critical) e número de usuários afetados.
+Após a triagem, é possível abrir um ticket com a prioridade sugerida.
+
+STATUS DE TICKETS
+open - ticket aberto, aguardando atendimento
+in_progress - ticket em atendimento
+resolved - ticket resolvido, aguardando confirmação do cliente
+closed - ticket encerrado
+
+SEGURANÇA E DADOS
+Todos os dados sensíveis são mascarados na exibição:
+- Email: primeiros 3 caracteres visíveis + *** + domínio (ex: joa***@empresa.com)
+- CNPJ: **.***.***/**01-**
+- Telefone: (**) *****-XXXX (apenas últimos 4 dígitos visíveis)
+Nunca compartilhe dados completos de clientes fora do sistema.

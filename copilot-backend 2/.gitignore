@@ -1,0 +1,19 @@
+node_modules/
+dist/
+coverage/
+logs/
+*.log
+
+# Environment — never commit real secrets
+.env
+!.env.example
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

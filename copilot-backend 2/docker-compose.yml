@@ -1,0 +1,44 @@
+version: '3.9'
+
+services:
+  backend:
+    build:
+      context: .
+      target: production
+    image: copilot-backend:latest
+    restart: unless-stopped
+    ports:
+      - '3001:3000'
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      LOG_LEVEL: info
+      STUDIO_API_KEY: ${STUDIO_API_KEY:-dev-secret-key-change-in-production}
+      USE_MOCK_APIS: ${USE_MOCK_APIS:-true}
+      API_TIMEOUT_MS: ${API_TIMEOUT_MS:-5000}
+      RATE_LIMIT_WINDOW_MS: ${RATE_LIMIT_WINDOW_MS:-900000}
+      RATE_LIMIT_MAX: ${RATE_LIMIT_MAX:-100}
+      TICKETS_API_URL: ${TICKETS_API_URL:-}
+      TICKETS_API_KEY: ${TICKETS_API_KEY:-}
+      CUSTOMERS_API_URL: ${CUSTOMERS_API_URL:-}
+      CUSTOMERS_API_KEY: ${CUSTOMERS_API_KEY:-}
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.copilot-backend.rule=Host(`bd.redeinter.online`)
+      - traefik.http.routers.copilot-backend.entrypoints=websecure
+      - traefik.http.routers.copilot-backend.tls=true
+      - traefik.http.routers.copilot-backend.tls.certresolver=letsencryptresolver
+      - traefik.http.services.copilot-backend.loadbalancer.server.port=3000
+    healthcheck:
+      test: ['CMD', 'wget', '-qO-', 'http://localhost:3000/health']
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - public
+
+networks:
+  public:
+    external: true
+    name: network_swarm_public

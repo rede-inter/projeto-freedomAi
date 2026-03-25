@@ -1,0 +1,4481 @@
+app:
+  description: Copiloto operacional de suporte B2B com classificação de intenção,
+    guardrails, knowledge base real, mascaramento de dados sensíveis e tratamento
+    de falhas de API.
+  icon: 🤖
+  icon_background: '#E0F2FE'
+  mode: advanced-chat
+  name: Copiloto Operacional de Suporte B2B
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/openai:0.3.2@d70fb969e7c79719bee96573a8f4c9dc4ffd984f4171b9184cc3869c886af45d
+    version: null
+kind: app
+version: 0.5.0
+workflow:
+  conversation_variables: []
+  environment_variables:
+  - description: URL base do backend
+    id: ev1
+    name: BACKEND_URL
+    selector:
+    - env
+    - BACKEND_URL
+    value: ''
+    value_type: secret
+  - description: API Key do backend
+    id: ev2
+    name: BACKEND_API_KEY
+    selector:
+    - env
+    - BACKEND_API_KEY
+    value: ''
+    value_type: secret
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_batch_limit: 10
+        image_file_size_limit: 10
+        single_chunk_attachment_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: 'Olá! Sou o Copiloto de Suporte B2B. Posso ajudar com:
+
+      - Consultar clientes e SLAs
+
+      - Ver tickets de suporte
+
+      - Criar novos tickets
+
+      - Escalar atendimentos
+
+      - Fazer triagem de problemas
+
+      - Responder dúvidas sobre processos
+
+
+      Como posso ajudar?
+
+      '
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions:
+    - Consultar cliente CUST-001
+    - Ver SLA do cliente CUST-002
+    - Mostrar ticket TKT-00001
+    - Quero abrir um ticket de suporte
+    - Escalar o ticket TKT-00001
+    - Como funciona o processo de escalonamento?
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        sourceType: start
+        targetType: llm
+      id: e01
+      selected: false
+      source: start
+      sourceHandle: source
+      target: intent-classifier
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: code
+      id: e02
+      selected: false
+      source: intent-classifier
+      sourceHandle: source
+      target: parse-intent
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: code
+      id: e03
+      selected: false
+      source: parse-intent
+      sourceHandle: source
+      target: validate-by-intent
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: http-request
+        targetType: answer
+      id: evt-customer-source-1774311736000-target
+      selected: false
+      source: evt-customer
+      sourceHandle: source
+      target: '1774311736000'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: http-request
+        targetType: answer
+      id: evt-sla-source-17743702052110-target
+      selected: false
+      source: evt-sla
+      sourceHandle: source
+      target: '17743702052110'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: http-request
+        targetType: answer
+      id: evt-ticket-source-17743704437030-target
+      selected: false
+      source: evt-ticket
+      sourceHandle: source
+      target: '17743704437030'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: http-request
+        targetType: answer
+      id: evt-create-source-17743713253710-target
+      selected: false
+      source: evt-create
+      sourceHandle: source
+      target: '17743713253710'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: http-request
+        targetType: answer
+      id: evt-escalate-source-17743714408550-target
+      selected: false
+      source: evt-escalate
+      sourceHandle: source
+      target: '17743714408550'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: http-request
+        targetType: answer
+      id: evt-triage-source-17743717429330-target
+      selected: false
+      source: evt-triage
+      sourceHandle: source
+      target: '17743717429330'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: http-request
+      id: route-intent-case-resumo-http-summary-target
+      selected: false
+      source: route-intent
+      sourceHandle: case-resumo
+      target: http-summary
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: http-request
+        targetType: if-else
+      id: http-summary-source-check-summary-target
+      selected: false
+      source: http-summary
+      sourceHandle: source
+      target: check-summary
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: code
+      id: check-summary-case-summary-ok-code-format-summary-target
+      selected: false
+      source: check-summary
+      sourceHandle: case-summary-ok
+      target: code-format-summary
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: answer
+      id: check-summary-false-ans-no-summary-target
+      selected: false
+      source: check-summary
+      sourceHandle: 'false'
+      target: ans-no-summary
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: answer
+      id: code-format-summary-source-ans-summary-target
+      selected: false
+      source: code-format-summary
+      sourceHandle: source
+      target: ans-summary
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: llm
+      id: e14
+      selected: false
+      source: route-intent
+      sourceHandle: case-create
+      target: extract-create
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: code
+      id: e15
+      selected: false
+      source: extract-create
+      sourceHandle: source
+      target: guardrail-create
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: if-else
+      id: e16
+      selected: false
+      source: guardrail-create
+      sourceHandle: source
+      target: check-create
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: answer
+      id: e18
+      selected: false
+      source: check-create
+      sourceHandle: 'false'
+      target: ans-ask-missing
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: http-request
+        targetType: code
+      id: e19
+      selected: false
+      source: http-create
+      sourceHandle: source
+      target: check-http-create
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: if-else
+      id: e20
+      selected: false
+      source: check-http-create
+      sourceHandle: source
+      target: if-create-ok
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: answer
+      id: e22
+      selected: false
+      source: if-create-ok
+      sourceHandle: 'false'
+      target: ans-error-create
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: llm
+      id: e24
+      selected: false
+      source: route-intent
+      sourceHandle: case-escalate
+      target: extract-escalate
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: code
+      id: e25
+      selected: false
+      source: extract-escalate
+      sourceHandle: source
+      target: guardrail-escalate
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: if-else
+      id: e26
+      selected: false
+      source: guardrail-escalate
+      sourceHandle: source
+      target: check-esc
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: answer
+      id: e28
+      selected: false
+      source: check-esc
+      sourceHandle: 'false'
+      target: ans-ask-missing-esc
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: http-request
+        targetType: code
+      id: e29
+      selected: false
+      source: http-escalate
+      sourceHandle: source
+      target: check-http-escalate
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: if-else
+      id: e30
+      selected: false
+      source: check-http-escalate
+      sourceHandle: source
+      target: if-escalate-ok
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: answer
+      id: e32
+      selected: false
+      source: if-escalate-ok
+      sourceHandle: 'false'
+      target: ans-error-escalate
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: http-request
+        targetType: code
+      id: e35
+      selected: false
+      source: http-triage
+      sourceHandle: source
+      target: check-http-triage
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: if-else
+      id: e36
+      selected: false
+      source: check-http-triage
+      sourceHandle: source
+      target: if-triage-ok
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: answer
+      id: e38
+      selected: false
+      source: if-triage-ok
+      sourceHandle: 'false'
+      target: ans-error-triage
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: knowledge-retrieval
+      id: e40
+      selected: false
+      source: route-intent
+      sourceHandle: case-kb
+      target: kb-retrieval
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: answer
+      id: e42
+      selected: false
+      source: route-intent
+      sourceHandle: 'false'
+      target: ans-unknown
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: http-request
+        targetType: code
+      id: e43
+      selected: false
+      source: http-get-customer
+      sourceHandle: source
+      target: check-mask-customer
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: code
+      id: e44
+      selected: false
+      source: check-mask-customer
+      sourceHandle: source
+      target: filter-customer
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: answer
+      id: e46
+      selected: false
+      source: if-customer-ok
+      sourceHandle: 'false'
+      target: ans-error-customer
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: http-request
+        targetType: code
+      id: e48
+      selected: false
+      source: http-get-sla
+      sourceHandle: source
+      target: check-mask-sla
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: code
+      id: e49
+      selected: false
+      source: check-mask-sla
+      sourceHandle: source
+      target: filter-sla
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: answer
+      id: e51
+      selected: false
+      source: if-sla-ok
+      sourceHandle: 'false'
+      target: ans-error-sla
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: http-request
+        targetType: code
+      id: e53
+      selected: false
+      source: http-get-ticket
+      sourceHandle: source
+      target: check-mask-ticket
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: code
+      id: e54
+      selected: false
+      source: check-mask-ticket
+      sourceHandle: source
+      target: filter-ticket
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: answer
+      id: e56
+      selected: false
+      source: if-ticket-ok
+      sourceHandle: 'false'
+      target: ans-error-ticket
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: if-else
+      id: e44b
+      selected: false
+      source: filter-customer
+      sourceHandle: source
+      target: if-customer-ok
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: if-else
+      id: e49b
+      selected: false
+      source: filter-sla
+      sourceHandle: source
+      target: if-sla-ok
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: if-else
+      id: e54b
+      selected: false
+      source: filter-ticket
+      sourceHandle: source
+      target: if-ticket-ok
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: code
+      id: if-customer-ok-case-customer-ok-17743116666410-target
+      selected: false
+      source: if-customer-ok
+      sourceHandle: case-customer-ok
+      target: '17743116666410'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: http-request
+      id: 17743116666410-source-evt-customer-target
+      selected: false
+      source: '17743116666410'
+      sourceHandle: source
+      target: evt-customer
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: llm
+      id: kb-retrieval-source-llm-format-kb-target
+      selected: false
+      source: kb-retrieval
+      sourceHandle: source
+      target: llm-format-kb
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: http-request
+      id: 17743702006140-source-evt-sla-target
+      selected: false
+      source: '17743702006140'
+      sourceHandle: source
+      target: evt-sla
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: code
+      id: if-sla-ok-case-sla-ok-17743702006140-target
+      selected: false
+      source: if-sla-ok
+      sourceHandle: case-sla-ok
+      target: '17743702006140'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: http-request
+      id: 17743704399200-source-evt-ticket-target
+      selected: false
+      source: '17743704399200'
+      sourceHandle: source
+      target: evt-ticket
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: code
+      id: if-ticket-ok-case-ticket-ok-17743704399200-target
+      selected: false
+      source: if-ticket-ok
+      sourceHandle: case-ticket-ok
+      target: '17743704399200'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: code
+      id: if-create-ok-case-create-ok-17743713197380-target
+      selected: false
+      source: if-create-ok
+      sourceHandle: case-create-ok
+      target: '17743713197380'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: http-request
+      id: 17743713197380-source-evt-create-target
+      selected: false
+      source: '17743713197380'
+      sourceHandle: source
+      target: evt-create
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: code
+      id: if-escalate-ok-case-escalate-ok-17743714317700-target
+      selected: false
+      source: if-escalate-ok
+      sourceHandle: case-escalate-ok
+      target: '17743714317700'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: http-request
+      id: 17743714317700-source-evt-escalate-target
+      selected: false
+      source: '17743714317700'
+      sourceHandle: source
+      target: evt-escalate
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: code
+      id: if-triage-ok-case-triage-ok-17743717332860-target
+      selected: false
+      source: if-triage-ok
+      sourceHandle: case-triage-ok
+      target: '17743717332860'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: http-request
+      id: 17743717332860-source-evt-triage-target
+      selected: false
+      source: '17743717332860'
+      sourceHandle: source
+      target: evt-triage
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: answer
+      id: 17743720648640-source-17743720720970-target
+      source: '17743720648640'
+      sourceHandle: source
+      target: '17743720720970'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: if-else
+      id: llm-format-kb-source-17743723273630-target
+      source: llm-format-kb
+      sourceHandle: source
+      target: '17743723273630'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: code
+      id: 17743723273630-case-customer-ok-17743720648640-target
+      source: '17743723273630'
+      sourceHandle: case-customer-ok
+      target: '17743720648640'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: answer
+      id: 17743723273630-false-17743723513660-target
+      source: '17743723273630'
+      sourceHandle: 'false'
+      target: '17743723513660'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: if-else
+      id: validate-by-intent-source-route-intent-target
+      source: validate-by-intent
+      sourceHandle: source
+      target: route-intent
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: code
+      id: route-intent-case-get-customer-1774379485512-target
+      source: route-intent
+      sourceHandle: case-get-customer
+      target: '1774379485512'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: if-else
+      id: 1774379485512-source-1774379805496-target
+      source: '1774379485512'
+      sourceHandle: source
+      target: '1774379805496'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: answer
+      id: 1774379805496-false-1774379922763-target
+      source: '1774379805496'
+      sourceHandle: 'false'
+      target: '1774379922763'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: http-request
+      id: 1774379805496-true-http-get-customer-target
+      source: '1774379805496'
+      sourceHandle: 'true'
+      target: http-get-customer
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: code
+      id: route-intent-case-get-sla-1774380894849-target
+      source: route-intent
+      sourceHandle: case-get-sla
+      target: '1774380894849'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: code
+      id: route-intent-case-get-ticket-1774380908747-target
+      source: route-intent
+      sourceHandle: case-get-ticket
+      target: '1774380908747'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: if-else
+      id: 1774380894849-source-1774380923464-target
+      source: '1774380894849'
+      sourceHandle: source
+      target: '1774380923464'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: if-else
+      id: 1774380908747-source-1774380935947-target
+      source: '1774380908747'
+      sourceHandle: source
+      target: '1774380935947'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: http-request
+      id: 1774380923464-true-http-get-sla-target
+      source: '1774380923464'
+      sourceHandle: 'true'
+      target: http-get-sla
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: answer
+      id: 1774380923464-false-17743809863970-target
+      source: '1774380923464'
+      sourceHandle: 'false'
+      target: '17743809863970'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: http-request
+      id: 1774380935947-true-http-get-ticket-target
+      source: '1774380935947'
+      sourceHandle: 'true'
+      target: http-get-ticket
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: answer
+      id: 1774380935947-false-17743809922790-target
+      source: '1774380935947'
+      sourceHandle: 'false'
+      target: '17743809922790'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: code
+      id: route-intent-case-triage-1774382887968-target
+      source: route-intent
+      sourceHandle: case-triage
+      target: '1774382887968'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: http-request
+      id: 1774382887968-source-http-triage-target
+      source: '1774382887968'
+      sourceHandle: source
+      target: http-triage
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: code
+      id: check-create-case-create-valid-1774383837224-target
+      source: check-create
+      sourceHandle: case-create-valid
+      target: '1774383837224'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: http-request
+      id: 1774383837224-source-http-create-target
+      source: '1774383837224'
+      sourceHandle: source
+      target: http-create
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: code
+      id: check-esc-case-esc-valid-1774384382703-target
+      source: check-esc
+      sourceHandle: case-esc-valid
+      target: '1774384382703'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: http-request
+      id: 1774384382703-source-http-escalate-target
+      source: '1774384382703'
+      sourceHandle: source
+      target: http-escalate
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: Início
+        type: start
+        variables: []
+      height: 73
+      id: start
+      position:
+        x: -772.5440025295636
+        y: 375
+      positionAbsolute:
+        x: -772.5440025295636
+        y: 375
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        memory:
+          query_prompt_template: '{{#sys.query#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: true
+            size: 20
+        model:
+          completion_params:
+            temperature: 0.1
+          mode: chat
+          name: gpt-4o
+          provider: langgenius/openai/openai
+        prompt_template:
+        - id: 2bc186e5-74cd-4099-9a35-3b62ea6d6bed
+          role: system
+          text: 'Você é o classificador de intenções de um copiloto de suporte B2B.
+
+            Analise a mensagem do usuário e retorne SOMENTE JSON válido, sem texto
+            adicional.
+
+            INTENÇÕES DISPONÍVEIS:
+
+            GET_CUSTOMER — usuário quer dados de um cliente específico (exige ID CUST-XXX)
+
+            GET_SLA — usuário quer ver o SLA de um cliente específico (exige ID CUST-XXX)
+
+            GET_TICKET — usuário quer ver um ticket existente (exige ID TKT-NNNNN)
+
+            CREATE_TICKET — usuário quer abrir ou criar um novo ticket
+
+            ESCALATE_TICKET — usuário quer escalar um ticket existente
+
+            TRIAGE — usuário descreve uma situação/problema e quer orientação de prioridade
+
+            DUVIDA_DOCS — usuário tem dúvida sobre processo, política, regra, plano,
+            categoria, tempo de resposta, ou qualquer pergunta conceitual que NÃO
+            envolva um ID específico
+
+            RESUMO_ATENDIMENTO — usuário quer ver o resumo ou histórico do atendimento atual (ex: \"resumo do atendimento\", \"o que foi feito\", \"histórico\")
+
+            UNKNOWN — não foi possível determinar a intenção com clareza
+
+            REGRAS IMPORTANTES:
+
+            Para TRIAGE, extraia obrigatoriamente:
+
+            customer_id: ID do cliente no formato CUST-XXX
+
+            category: bug | feature | question | outage
+
+            impact: low | medium | high | critical
+
+            description: descrição do problema
+
+            affected_users: número de usuários afetados (padrão 1)
+
+            Se a mensagem mencionar "outage", categoria deve ser outage
+
+            Se a mensagem mencionar "bug" ou "erro", categoria deve ser bug
+
+            Se a mensagem mencionar "sugestão" ou "nova funcionalidade", categoria
+            deve ser feature
+
+            Se a mensagem mencionar "dúvida" ou "como funciona", categoria deve ser question
+
+            Perguntas sobre SLA em geral (ex: "Qual o SLA Premium?", "Qual o tempo
+            de resposta P1?") → DUVIDA_DOCS
+
+            Apenas perguntas com ID específico (CUST-XXX) vão para GET_SLA ou GET_CUSTOMER
+
+            Se confidence < 0.75, use UNKNOWN
+
+            FORMATO OBRIGATÓRIO:
+
+            json
+
+            {"intent":"GET_CUSTOMER","confidence":0.95,"entities":{"customer_id":null,"ticket_id":null,"title":null,"description":null,"category":null,"reporter_email":null,"justification":null,"affected_users":null,"impact":null},"clarification_needed":[]}'
+        - id: ca5ca3a1-e258-465a-95ec-adae29bd15ea
+          role: user
+          text: '{{#sys.query#}}'
+        selected: false
+        title: Classificador de Intenção
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 88
+      id: intent-classifier
+      position:
+        x: -302.13551330150653
+        y: 396
+      positionAbsolute:
+        x: -302.13551330150653
+        y: 396
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "function main({llm_output}) {\n  try {\n    var clean = (llm_output\
+          \ || '').replace(/```json\\n?/g, '').replace(/```\\n?/g, '').trim();\n \
+          \   var p = JSON.parse(clean);\n    var e = p.entities || {};\n    var conf\
+          \ = parseFloat(String(p.confidence || 0)) || 0;\n    var intent = String(p.intent\
+          \ || 'UNKNOWN');\n    var valid = ['GET_CUSTOMER','GET_SLA','GET_TICKET','CREATE_TICKET','ESCALATE_TICKET','TRIAGE','DUVIDA_DOCS','RESUMO_ATENDIMENTO','UNKNOWN'];\n\
+          \    if (conf < 0.75 || valid.indexOf(intent) === -1) { intent = 'UNKNOWN';\
+          \ }\n    return {\n      intent: intent,\n      customer_id: String(e.customer_id\
+          \ || '').trim().toUpperCase(),\n      ticket_id: String(e.ticket_id || '').trim().toUpperCase(),\n\
+          \      title: String(e.title || ''),\n      description: String(e.description\
+          \ || ''),\n      category: String(e.category || ''),\n      reporter_email:\
+          \ String(e.reporter_email || ''),\n      justification: String(e.justification\
+          \ || ''),\n      affected_users: String(e.affected_users || '1'),\n    \
+          \  impact: String(e.impact || 'low'),\n      clarification_needed: String((p.clarification_needed\
+          \ || []).join(', '))\n    };\n  } catch(err) {\n    return {intent:'UNKNOWN',customer_id:'',ticket_id:'',title:'',description:'',\n\
+          \            category:'',reporter_email:'',justification:'',affected_users:'1',\n\
+          \            impact:'low',clarification_needed:''};\n  }\n}"
+        code_language: javascript
+        desc: ''
+        outputs:
+          affected_users:
+            children: null
+            type: string
+          category:
+            children: null
+            type: string
+          clarification_needed:
+            children: null
+            type: string
+          customer_id:
+            children: null
+            type: string
+          description:
+            children: null
+            type: string
+          impact:
+            children: null
+            type: string
+          intent:
+            children: null
+            type: string
+          justification:
+            children: null
+            type: string
+          reporter_email:
+            children: null
+            type: string
+          ticket_id:
+            children: null
+            type: string
+          title:
+            children: null
+            type: string
+        selected: false
+        title: parse_intent
+        type: code
+        variables:
+        - value_selector:
+          - intent-classifier
+          - text
+          variable: llm_output
+      height: 52
+      id: parse-intent
+      position:
+        x: 218.61877060594804
+        y: 396
+      positionAbsolute:
+        x: 218.61877060594804
+        y: 396
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "function main({intent, customer_id, ticket_id}) {\n  var result = {\n\
+          \    customer_valid: 'true', ticket_valid: 'true',\n    customer_errors:\
+          \ '', ticket_errors: '', should_proceed: 'true'\n  };\n  var needs_customer\
+          \ = ['GET_CUSTOMER','GET_SLA','CREATE_TICKET'].indexOf(intent) !== -1;\n\
+          \  var needs_ticket   = ['GET_TICKET','ESCALATE_TICKET'].indexOf(intent)\
+          \ !== -1;\n  var intent_messages = {\n    'GET_CUSTOMER':'consultar um cliente','GET_SLA':'ver\
+          \ o SLA de um cliente',\n    'GET_TICKET':'visualizar um ticket','CREATE_TICKET':'criar\
+          \ um novo ticket',\n    'ESCALATE_TICKET':'escalar um ticket','TRIAGE':'fazer\
+          \ triagem de um problema'\n  };\n  if (needs_customer) {\n    var cust_id\
+          \ = (customer_id || '').trim().toUpperCase();\n    if (!cust_id) {\n   \
+          \   result.customer_valid = 'false';\n      result.customer_errors = 'ID\
+          \ do cliente não informado. Para ' + (intent_messages[intent] || 'esta operação')\
+          \ + ', informe o ID no formato CUST-XXX (ex: CUST-001).';\n      result.should_proceed\
+          \ = 'false';\n    } else if (!/^CUST-[A-Z0-9]+$/i.test(cust_id)) {\n   \
+          \   result.customer_valid = 'false';\n      result.customer_errors = 'Formato\
+          \ de ID de cliente inválido: \"' + cust_id + '\". Formato esperado: CUST-XXX\
+          \ (ex: CUST-001).';\n      result.should_proceed = 'false';\n    }\n  }\n\
+          \  if (needs_ticket) {\n    var tkt_id = (ticket_id || '').trim().toUpperCase();\n\
+          \    if (!tkt_id) {\n      result.ticket_valid = 'false';\n      result.ticket_errors\
+          \ = 'ID do ticket não informado. Para ' + (intent_messages[intent] || 'esta\
+          \ operação') + ', informe o ID no formato TKT-00000 (ex: TKT-00001).';\n\
+          \      result.should_proceed = 'false';\n    } else if (!/^TKT-\\d{5}$/i.test(tkt_id))\
+          \ {\n      result.ticket_valid = 'false';\n      result.ticket_errors =\
+          \ 'Formato de ID de ticket inválido: \"' + tkt_id + '\". Formato esperado:\
+          \ TKT-NNNNN com 5 dígitos (ex: TKT-00001).';\n      result.should_proceed\
+          \ = 'false';\n    }\n  }\n  return result;\n}"
+        code_language: javascript
+        desc: ''
+        outputs:
+          customer_errors:
+            children: null
+            type: string
+          customer_valid:
+            children: null
+            type: string
+          should_proceed:
+            children: null
+            type: string
+          ticket_errors:
+            children: null
+            type: string
+          ticket_valid:
+            children: null
+            type: string
+        selected: false
+        title: Validar IDs por Intenção
+        type: code
+        variables:
+        - value_selector:
+          - parse-intent
+          - intent
+          variable: intent
+        - value_selector:
+          - parse-intent
+          - customer_id
+          variable: customer_id
+        - value_selector:
+          - parse-intent
+          - ticket_id
+          variable: ticket_id
+      height: 52
+      id: validate-by-intent
+      position:
+        x: 705.1823612295248
+        y: 396
+      positionAbsolute:
+        x: 705.1823612295248
+        y: 396
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        cases:
+        - case_id: case-get-customer
+          conditions:
+          - comparison_operator: is
+            value: GET_CUSTOMER
+            variable_selector:
+            - parse-intent
+            - intent
+          logical_operator: and
+        - case_id: case-get-sla
+          conditions:
+          - comparison_operator: is
+            value: GET_SLA
+            variable_selector:
+            - parse-intent
+            - intent
+          logical_operator: and
+        - case_id: case-get-ticket
+          conditions:
+          - comparison_operator: is
+            value: GET_TICKET
+            variable_selector:
+            - parse-intent
+            - intent
+          logical_operator: and
+        - case_id: case-create
+          conditions:
+          - comparison_operator: is
+            value: CREATE_TICKET
+            variable_selector:
+            - parse-intent
+            - intent
+          logical_operator: and
+        - case_id: case-escalate
+          conditions:
+          - comparison_operator: is
+            value: ESCALATE_TICKET
+            variable_selector:
+            - parse-intent
+            - intent
+          logical_operator: and
+        - case_id: case-triage
+          conditions:
+          - comparison_operator: is
+            value: TRIAGE
+            variable_selector:
+            - parse-intent
+            - intent
+          logical_operator: and
+        - case_id: case-kb
+          conditions:
+          - comparison_operator: is
+            value: DUVIDA_DOCS
+            variable_selector:
+            - parse-intent
+            - intent
+          logical_operator: and
+        - case_id: case-resumo
+          conditions:
+          - comparison_operator: is
+            value: RESUMO_ATENDIMENTO
+            variable_selector:
+            - parse-intent
+            - intent
+          logical_operator: and
+        desc: ''
+        logical_operator: and
+        selected: false
+        title: Roteador de Intenção
+        type: if-else
+      height: 412
+      id: route-intent
+      position:
+        x: 1172
+        y: 396
+      positionAbsolute:
+        x: 1172
+        y: 396
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data:
+          - type: text
+            value: ''
+          type: none
+        desc: ''
+        headers: 'X-API-Key:{{#env.BACKEND_API_KEY#}}
+
+          X-Conversation-Id:{{#sys.conversation_id#}}
+
+          Content-Type:application/json'
+        method: get
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          connect: 10
+          max_connect_time: 10
+          max_read_time: 60
+          max_write_time: 20
+          read: 60
+          write: 20
+        title: GET Customer
+        type: http-request
+        url: '{{#env.BACKEND_URL#}}/v1/customers'
+        variables: []
+      height: 157
+      id: http-get-customer
+      position:
+        x: 2841.491589358795
+        y: -954.9662002614755
+      positionAbsolute:
+        x: 2841.491589358795
+        y: -954.9662002614755
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "function main({status_code, body}) {\n  var code = parseInt(String(status_code))\
+          \ || 0;\n  var ok = (code >= 200 && code < 300);\n  var safe = (body ||\
+          \ '')\n    .replace(/([a-zA-Z0-9._%+\\-]{3})[a-zA-Z0-9._%+\\-]*(@[a-zA-Z0-9.\\\
+          -]+\\.[a-zA-Z]{2,})/g, '$1***$2')\n    .replace(/\\d{2}\\.\\d{3}\\.\\d{3}\\\
+          /\\d{4}-\\d{2}/g, '**.***.***/**01-**')\n    .replace(/\\((\\d{2})\\)\\\
+          s*\\d{4,5}-(\\d{4})/g, '(**) *****-$2')\n    .replace(/\"phone\"\\s*:\\\
+          s*\"(\\d{2})\\d+(\\d{4})\"/g, '\"phone\":\"$1*****$2\"')\n    .replace(/\"\
+          cpf\"\\s*:\\s*\"\\d{3}\\.\\d{3}\\.\\d{3}-(\\d{2})\"/g, '\"cpf\":\"***.***.***-$1\"\
+          ');\n  return {\n    is_success: ok ? 'true' : 'false',\n    masked_body:\
+          \ safe\n  };\n}"
+        code_language: javascript
+        desc: ''
+        outputs:
+          is_success:
+            children: null
+            type: string
+          masked_body:
+            children: null
+            type: string
+        selected: false
+        title: check_mask_customer
+        type: code
+        variables:
+        - value_selector:
+          - http-get-customer
+          - status_code
+          variable: status_code
+        - value_selector:
+          - http-get-customer
+          - body
+          variable: body
+      height: 52
+      id: check-mask-customer
+      position:
+        x: 3305.9999999999995
+        y: -954.9662002614755
+      positionAbsolute:
+        x: 3305.9999999999995
+        y: -954.9662002614755
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        cases:
+        - case_id: case-customer-ok
+          conditions:
+          - comparison_operator: is
+            value: 'true'
+            variable_selector:
+            - filter-customer
+            - is_success
+          id: case-customer-ok
+          logical_operator: and
+        desc: ''
+        logical_operator: and
+        selected: false
+        title: API Customer OK?
+        type: if-else
+      height: 124
+      id: if-customer-ok
+      position:
+        x: 4296
+        y: -954.9662002614755
+      positionAbsolute:
+        x: 4296
+        y: -954.9662002614755
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: 'Desculpe, não consegui concluir essa operação agora. O serviço pode
+          estar temporariamente indisponível.
+
+
+          Tente novamente em alguns minutos. Se o problema continuar, avise o time
+          de suporte com o código: {{#sys.conversation_id#}}'
+        desc: ''
+        selected: false
+        title: Erro API Customer
+        type: answer
+        variables: []
+      height: 200
+      id: ans-error-customer
+      position:
+        x: 5050.196542944758
+        y: -876.3390010881021
+      positionAbsolute:
+        x: 5050.196542944758
+        y: -876.3390010881021
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data: ''
+          type: none
+        desc: ''
+        headers: 'X-API-Key: {{#env.BACKEND_API_KEY#}}
+
+          X-Conversation-Id: {{#sys.conversation_id#}}
+
+          Content-Type: application/json
+
+          '
+        method: get
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        timeout:
+          connect: 10
+          max_connect_time: 10
+          max_read_time: 60
+          max_write_time: 20
+          read: 60
+          write: 20
+        title: GET SLA
+        type: http-request
+        url: '{{#env.BACKEND_URL#}}/v1/customers/sla'
+        variables: []
+      height: 157
+      id: http-get-sla
+      position:
+        x: 2841.491589358795
+        y: -500
+      positionAbsolute:
+        x: 2841.491589358795
+        y: -500
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "function main({status_code, body}) {\n  var code = parseInt(String(status_code))\
+          \ || 0;\n  var ok = (code >= 200 && code < 300);\n  var safe = (body ||\
+          \ '')\n    .replace(/([a-zA-Z0-9._%+\\-]{3})[a-zA-Z0-9._%+\\-]*(@[a-zA-Z0-9.\\\
+          -]+\\.[a-zA-Z]{2,})/g, '$1***$2')\n    .replace(/\\d{2}\\.\\d{3}\\.\\d{3}\\\
+          /\\d{4}-\\d{2}/g, '**.***.***/**01-**')\n    .replace(/\\((\\d{2})\\)\\\
+          s*\\d{4,5}-(\\d{4})/g, '(**) *****-$2')\n    .replace(/\"phone\"\\s*:\\\
+          s*\"(\\d{2})\\d+(\\d{4})\"/g, '\"phone\":\"$1*****$2\"')\n    .replace(/\"\
+          cpf\"\\s*:\\s*\"\\d{3}\\.\\d{3}\\.\\d{3}-(\\d{2})\"/g, '\"cpf\":\"***.***.***-$1\"\
+          ');\n  return {\n    is_success: ok ? 'true' : 'false',\n    masked_body:\
+          \ safe\n  };\n}"
+        code_language: javascript
+        desc: ''
+        outputs:
+          is_success:
+            children: null
+            type: string
+          masked_body:
+            children: null
+            type: string
+        selected: false
+        title: check_mask_sla
+        type: code
+        variables:
+        - value_selector:
+          - http-get-sla
+          - status_code
+          variable: status_code
+        - value_selector:
+          - http-get-sla
+          - body
+          variable: body
+      height: 52
+      id: check-mask-sla
+      position:
+        x: 3305.9999999999995
+        y: -500
+      positionAbsolute:
+        x: 3305.9999999999995
+        y: -500
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        cases:
+        - case_id: case-sla-ok
+          conditions:
+          - comparison_operator: is
+            value: 'true'
+            variable_selector:
+            - filter-sla
+            - is_success
+          logical_operator: and
+        desc: ''
+        logical_operator: and
+        selected: false
+        title: API SLA OK?
+        type: if-else
+      height: 124
+      id: if-sla-ok
+      position:
+        x: 4296
+        y: -500
+      positionAbsolute:
+        x: 4296
+        y: -500
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: 'Desculpe, não consegui concluir essa operação agora. O serviço pode
+          estar temporariamente indisponível.
+
+
+          Tente novamente em alguns minutos. Se o problema continuar, avise o time
+          de suporte com o código: {{#sys.conversation_id#}}'
+        desc: ''
+        selected: false
+        title: Erro API SLA
+        type: answer
+        variables: []
+      height: 200
+      id: ans-error-sla
+      position:
+        x: 5050.196542944758
+        y: -418.66008619301573
+      positionAbsolute:
+        x: 5050.196542944758
+        y: -418.66008619301573
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data: ''
+          type: none
+        desc: ''
+        headers: 'X-API-Key: {{#env.BACKEND_API_KEY#}}
+
+          X-Conversation-Id: {{#sys.conversation_id#}}
+
+          Content-Type: application/json
+
+          '
+        method: get
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        timeout:
+          connect: 10
+          max_connect_time: 10
+          max_read_time: 60
+          max_write_time: 20
+          read: 60
+          write: 20
+        title: GET Ticket
+        type: http-request
+        url: '{{#env.BACKEND_URL#}}/v1/tickets'
+        variables: []
+      height: 141
+      id: http-get-ticket
+      position:
+        x: 2841.491589358795
+        y: -64
+      positionAbsolute:
+        x: 2841.491589358795
+        y: -64
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "function main({status_code, body}) {\n  var code = parseInt(String(status_code))\
+          \ || 0;\n  var ok = (code >= 200 && code < 300);\n  var safe = (body ||\
+          \ '')\n    .replace(/([a-zA-Z0-9._%+\\-]{3})[a-zA-Z0-9._%+\\-]*(@[a-zA-Z0-9.\\\
+          -]+\\.[a-zA-Z]{2,})/g, '$1***$2')\n    .replace(/\\d{2}\\.\\d{3}\\.\\d{3}\\\
+          /\\d{4}-\\d{2}/g, '**.***.***/**01-**')\n    .replace(/\\((\\d{2})\\)\\\
+          s*\\d{4,5}-(\\d{4})/g, '(**) *****-$2')\n    .replace(/\"phone\"\\s*:\\\
+          s*\"(\\d{2})\\d+(\\d{4})\"/g, '\"phone\":\"$1*****$2\"')\n    .replace(/\"\
+          cpf\"\\s*:\\s*\"\\d{3}\\.\\d{3}\\.\\d{3}-(\\d{2})\"/g, '\"cpf\":\"***.***.***-$1\"\
+          ');\n  return {\n    is_success: ok ? 'true' : 'false',\n    masked_body:\
+          \ safe\n  };\n}"
+        code_language: javascript
+        desc: ''
+        outputs:
+          is_success:
+            children: null
+            type: string
+          masked_body:
+            children: null
+            type: string
+        selected: false
+        title: check_mask_ticket
+        type: code
+        variables:
+        - value_selector:
+          - http-get-ticket
+          - status_code
+          variable: status_code
+        - value_selector:
+          - http-get-ticket
+          - body
+          variable: body
+      height: 52
+      id: check-mask-ticket
+      position:
+        x: 3305.9999999999995
+        y: -64
+      positionAbsolute:
+        x: 3305.9999999999995
+        y: -64
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        cases:
+        - case_id: case-ticket-ok
+          conditions:
+          - comparison_operator: is
+            value: 'true'
+            variable_selector:
+            - filter-ticket
+            - is_success
+          logical_operator: and
+        desc: ''
+        logical_operator: and
+        selected: false
+        title: API Ticket OK?
+        type: if-else
+      height: 124
+      id: if-ticket-ok
+      position:
+        x: 4296
+        y: -64
+      positionAbsolute:
+        x: 4296
+        y: -64
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: 'Desculpe, não consegui concluir essa operação agora. O serviço pode
+          estar temporariamente indisponível.
+
+
+          Tente novamente em alguns minutos. Se o problema continuar, avise o time
+          de suporte com o código: {{#sys.conversation_id#}}'
+        desc: ''
+        selected: false
+        title: Erro API Ticket
+        type: answer
+        variables: []
+      height: 200
+      id: ans-error-ticket
+      position:
+        x: 5050.196542944758
+        y: 15.788615025222953
+      positionAbsolute:
+        x: 5050.196542944758
+        y: 15.788615025222953
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        memory:
+          query_prompt_template: '{{#sys.query#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: true
+            size: 10
+        model:
+          completion_params:
+            temperature: 0
+          mode: chat
+          name: gpt-4o
+          provider: langgenius/openai/openai
+        prompt_template:
+        - id: d3a0f60a-58db-4844-b333-d2bf9b2733bf
+          role: system
+          text: 'Você é um extrator de dados para abertura de tickets de suporte B2B.
+
+            Analise o histórico da conversa e extraia TODOS os campos necessários.
+
+
+            CAMPOS OBRIGATÓRIOS:
+
+            - customerId: ID do cliente (formato CUST-XXX)
+
+            - title: título do ticket (10 a 120 caracteres)
+
+            - description: descrição detalhada do problema (mínimo 30 caracteres)
+
+            - category: bug | feature | question | outage
+
+            - reporterEmail: email válido de quem reporta
+
+
+            CAMPOS OPCIONAIS:
+
+            - affectedUsers: número de usuários afetados (padrão: 1)
+
+            - impactLevel: low | medium | high | critical
+
+
+            Retorne SOMENTE JSON:
+
+            {"customerId":"CUST-001","title":"título aqui","description":"descrição
+            detalhada","category":"bug","reporterEmail":"user@empresa.com","affectedUsers":1,"impactLevel":"medium"}'
+        - id: 97751cd7-a20b-44eb-a786-0ab1b240d36a
+          role: user
+          text: '{{#sys.query#}}'
+        selected: false
+        title: Extrair Dados do Ticket
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 88
+      id: extract-create
+      position:
+        x: 1731.7186565471861
+        y: 313.00236617202194
+      positionAbsolute:
+        x: 1731.7186565471861
+        y: 313.00236617202194
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "function main({llm_output}) {\n  var errs = [];\n  var cid='', title='',\
+          \ desc='', cat='', email='', aff='1', imp='low';\n  try {\n    var clean\
+          \ = (llm_output||'').replace(/```json\\n?/g,'').replace(/```\\n?/g,'').trim();\n\
+          \    var p = JSON.parse(clean);\n    cid   = String(p.customerId   || p.customer_id\
+          \   || '').trim().toUpperCase();\n    title = String(p.title        || '').trim();\n\
+          \    desc  = String(p.description  || p.desc          || '').trim();\n \
+          \   cat   = String(p.category     || '').trim().toLowerCase();\n    email\
+          \ = String(p.reporterEmail|| p.reporter_email|| '').trim();\n    aff   =\
+          \ String(p.affectedUsers|| p.affected_users|| 1);\n    imp   = String(p.impactLevel\
+          \  || p.impact        || 'low').trim().toLowerCase();\n  } catch(e) {\n\
+          \    return {guard_ok:'false',guard_errors:'Não foi possível extrair os\
+          \ dados. Por favor, forneça todas as informações novamente.',\n        \
+          \    customer_id:'',title:'',description:'',category:'',reporter_email:'',affected_users:'1',impact_level:'low'};\n\
+          \  }\n  if (!cid || !/^CUST-[A-Z0-9]+$/i.test(cid))\n    errs.push('ID do\
+          \ cliente inválido — formato esperado: CUST-XXX');\n  if (title.length <\
+          \ 10 || title.length > 120)\n    errs.push('Título deve ter 10-120 caracteres\
+          \ (atual: ' + title.length + ')');\n  if (desc.length < 30)\n    errs.push('Descrição\
+          \ deve ter mínimo 30 caracteres (atual: ' + desc.length + ')');\n  if (['bug','feature','question','outage'].indexOf(cat)\
+          \ === -1)\n    errs.push('Categoria inválida — use: bug, feature, question\
+          \ ou outage');\n  if (!email || !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email))\n\
+          \    errs.push('Email do responsável inválido');\n  return {\n    guard_ok:\
+          \ errs.length === 0 ? 'true' : 'false',\n    guard_errors: errs.join(' |\
+          \ '),\n    customer_id: cid, title: title, description: desc,\n    category:\
+          \ cat, reporter_email: email, affected_users: aff, impact_level: imp\n \
+          \ };\n}"
+        code_language: javascript
+        desc: ''
+        outputs:
+          affected_users:
+            children: null
+            type: string
+          category:
+            children: null
+            type: string
+          customer_id:
+            children: null
+            type: string
+          description:
+            children: null
+            type: string
+          guard_errors:
+            children: null
+            type: string
+          guard_ok:
+            children: null
+            type: string
+          impact_level:
+            children: null
+            type: string
+          reporter_email:
+            children: null
+            type: string
+          title:
+            children: null
+            type: string
+        selected: false
+        title: guardrail_create
+        type: code
+        variables:
+        - value_selector:
+          - extract-create
+          - text
+          variable: llm_output
+      height: 52
+      id: guardrail-create
+      position:
+        x: 2004.6434322604327
+        y: 313.00236617202194
+      positionAbsolute:
+        x: 2004.6434322604327
+        y: 313.00236617202194
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        cases:
+        - case_id: case-create-valid
+          conditions:
+          - comparison_operator: is
+            value: 'true'
+            variable_selector:
+            - guardrail-create
+            - guard_ok
+          id: case-create-valid
+          logical_operator: and
+        desc: ''
+        logical_operator: and
+        selected: false
+        title: Validar Dados do Ticket
+        type: if-else
+      height: 124
+      id: check-create
+      position:
+        x: 2280.3474296555273
+        y: 313.00236617202194
+      positionAbsolute:
+        x: 2280.3474296555273
+        y: 313.00236617202194
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: '📋 Para criar o ticket, preciso das seguintes informações:
+
+
+          {{#guardrail-create.guard_errors#}}
+
+
+          Envie os dados no formato correto.'
+        desc: ''
+        selected: false
+        title: Pedir Dados Criar Ticket
+        type: answer
+        variables:
+        - value_selector:
+          - guardrail-create
+          - guard_errors
+          variable: output_val
+      height: 151
+      id: ans-ask-missing
+      position:
+        x: 2841.491589358795
+        y: 511.18183312781673
+      positionAbsolute:
+        x: 2841.491589358795
+        y: 511.18183312781673
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data:
+          - id: key-value-122
+            key: ''
+            type: text
+            value: '{{#1774383837224.body_json#}}'
+          type: raw-text
+        desc: ''
+        headers: 'X-API-Key:{{#env.BACKEND_API_KEY#}}
+
+          X-Conversation-Id:{{#sys.conversation_id#}}
+
+          Content-Type:application/json'
+        method: post
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          connect: 10
+          max_connect_time: 10
+          max_read_time: 60
+          max_write_time: 20
+          read: 60
+          write: 20
+        title: POST Criar Ticket
+        type: http-request
+        url: '{{#env.BACKEND_URL#}}/v1/ticket'
+        variables: []
+      height: 157
+      id: http-create
+      position:
+        x: 2841.491589358795
+        y: 313.00236617202194
+      positionAbsolute:
+        x: 2841.491589358795
+        y: 313.00236617202194
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "function main({status_code, body}) {\n  var code = parseInt(String(status_code))\
+          \ || 0;\n  var ok = (code >= 200 && code < 300);\n  var safe = (body ||\
+          \ '')\n    .replace(/([a-zA-Z0-9._%+\\-]{3})[a-zA-Z0-9._%+\\-]*(@[a-zA-Z0-9.\\\
+          -]+\\.[a-zA-Z]{2,})/g, '$1***$2')\n    .replace(/\\d{2}\\.\\d{3}\\.\\d{3}\\\
+          /\\d{4}-\\d{2}/g, '**.***.***/**01-**')\n    .replace(/\\((\\d{2})\\)\\\
+          s*\\d{4,5}-(\\d{4})/g, '(**) *****-$2')\n    .replace(/\"phone\"\\s*:\\\
+          s*\"(\\d{2})\\d+(\\d{4})\"/g, '\"phone\":\"$1*****$2\"')\n    .replace(/\"\
+          cpf\"\\s*:\\s*\"\\d{3}\\.\\d{3}\\.\\d{3}-(\\d{2})\"/g, '\"cpf\":\"***.***.***-$1\"\
+          ');\n  return {\n    is_success: ok ? 'true' : 'false',\n    masked_body:\
+          \ safe\n  };\n}"
+        code_language: javascript
+        desc: ''
+        outputs:
+          is_success:
+            children: null
+            type: string
+          masked_body:
+            children: null
+            type: string
+        selected: false
+        title: check_http_create
+        type: code
+        variables:
+        - value_selector:
+          - http-create
+          - status_code
+          variable: status_code
+        - value_selector:
+          - http-create
+          - body
+          variable: body
+      height: 52
+      id: check-http-create
+      position:
+        x: 3305.9999999999995
+        y: 313.00236617202194
+      positionAbsolute:
+        x: 3305.9999999999995
+        y: 313.00236617202194
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        cases:
+        - case_id: case-create-ok
+          conditions:
+          - comparison_operator: is
+            value: 'true'
+            variable_selector:
+            - check-http-create
+            - is_success
+          logical_operator: and
+        desc: ''
+        logical_operator: and
+        selected: false
+        title: Ticket criado OK?
+        type: if-else
+      height: 124
+      id: if-create-ok
+      position:
+        x: 4296
+        y: 313.00236617202194
+      positionAbsolute:
+        x: 4296
+        y: 313.00236617202194
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: 'Desculpe, não consegui concluir essa operação agora. O serviço pode
+          estar temporariamente indisponível.
+
+
+          Tente novamente em alguns minutos. Se o problema continuar, avise o time
+          de suporte com o código: {{#sys.conversation_id#}}'
+        desc: ''
+        selected: false
+        title: Erro Criar Ticket
+        type: answer
+        variables: []
+      height: 200
+      id: ans-error-create
+      position:
+        x: 5050.196542944758
+        y: 396
+      positionAbsolute:
+        x: 5050.196542944758
+        y: 396
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        memory:
+          query_prompt_template: '{{#sys.query#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: true
+            size: 10
+        model:
+          completion_params:
+            temperature: 0
+          mode: chat
+          name: gpt-4o
+          provider: langgenius/openai/openai
+        prompt_template:
+        - id: ac62830d-bbbd-4aea-a7cb-7abb341f35ca
+          role: system
+          text: 'Você é um extrator de dados para escalonamento de tickets de suporte
+            B2B.
+
+            Analise o histórico da conversa e extraia os campos necessários.
+
+
+            CAMPOS OBRIGATÓRIOS:
+
+            - ticketId: ID do ticket (formato TKT-NNNNN)
+
+            - justification: justificativa detalhada do escalonamento (mínimo 20 caracteres)
+
+            - requestedBy: email de quem solicita o escalonamento
+
+
+            Retorne SOMENTE JSON:
+
+            {"ticketId":"TKT-00001","justification":"justificativa detalhada aqui","requestedBy":"user@empresa.com"}'
+        - id: 5a3d1a3f-c922-4e70-a0b3-d79493de05a9
+          role: user
+          text: '{{#sys.query#}}'
+        selected: false
+        title: Extrair Dados de Escalonamento
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 88
+      id: extract-escalate
+      position:
+        x: 1731.7186565471861
+        y: 843.5007517614258
+      positionAbsolute:
+        x: 1731.7186565471861
+        y: 843.5007517614258
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "function main({llm_output}) {\n  var errs = [];\n  var tkt='', just='',\
+          \ email='';\n  try {\n    var clean = (llm_output||'').replace(/```json\\\
+          n?/g,'').replace(/```\\n?/g,'').trim();\n    var p = JSON.parse(clean);\n\
+          \    tkt   = String(p.ticketId     || p.ticket_id    || '').trim().toUpperCase();\n\
+          \    just  = String(p.justification|| '').trim();\n    email = String(p.requestedBy\
+          \  || p.requested_by || '').trim();\n  } catch(e) {\n    return {guard_ok:'false',guard_errors:'Não\
+          \ foi possível extrair os dados de escalonamento. Por favor, forneça as\
+          \ informações novamente.',\n            ticket_id:'',justification:'',requested_by:''};\n\
+          \  }\n  if (!tkt || !/^TKT-\\d{5}$/.test(tkt))\n    errs.push('ID do ticket\
+          \ inválido — formato esperado: TKT-NNNNN (ex: TKT-00001)');\n  if (just.length\
+          \ < 20)\n    errs.push('Justificativa deve ter mínimo 20 caracteres (atual:\
+          \ ' + just.length + ')');\n  if (!email || !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email))\n\
+          \    errs.push('Email do solicitante inválido');\n  return {\n    guard_ok:\
+          \ errs.length === 0 ? 'true' : 'false',\n    guard_errors: errs.join(' |\
+          \ '),\n    ticket_id: tkt, justification: just, requested_by: email\n  };\n\
+          }"
+        code_language: javascript
+        desc: ''
+        outputs:
+          guard_errors:
+            children: null
+            type: string
+          guard_ok:
+            children: null
+            type: string
+          justification:
+            children: null
+            type: string
+          requested_by:
+            children: null
+            type: string
+          ticket_id:
+            children: null
+            type: string
+        selected: false
+        title: guardrail_escalate
+        type: code
+        variables:
+        - value_selector:
+          - extract-escalate
+          - text
+          variable: llm_output
+      height: 52
+      id: guardrail-escalate
+      position:
+        x: 2004.6434322604327
+        y: 843.5007517614258
+      positionAbsolute:
+        x: 2004.6434322604327
+        y: 843.5007517614258
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        cases:
+        - case_id: case-esc-valid
+          conditions:
+          - comparison_operator: is
+            value: 'true'
+            variable_selector:
+            - guardrail-escalate
+            - guard_ok
+          logical_operator: and
+        desc: ''
+        logical_operator: and
+        selected: false
+        title: Validar Escalonamento
+        type: if-else
+      height: 124
+      id: check-esc
+      position:
+        x: 2280.3474296555273
+        y: 843.5007517614258
+      positionAbsolute:
+        x: 2280.3474296555273
+        y: 843.5007517614258
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: '📋 Para criar o ticket, preciso das seguintes informações:
+
+
+          {{#guardrail-escalate.guard_errors#}}
+
+
+          Envie os dados no formato correto.'
+        desc: ''
+        selected: false
+        title: Pedir Dados de Escalonamento
+        type: answer
+        variables:
+        - value_selector:
+          - guardrail-escalate
+          - guard_errors
+          variable: output_val
+      height: 151
+      id: ans-ask-missing-esc
+      position:
+        x: 2841.491589358795
+        y: 1046.2915892984352
+      positionAbsolute:
+        x: 2841.491589358795
+        y: 1046.2915892984352
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data:
+          - id: key-value-164
+            key: ''
+            type: text
+            value: '{{#1774384382703.body_json#}}'
+          type: raw-text
+        desc: ''
+        headers: 'X-API-Key:{{#env.BACKEND_API_KEY#}}
+
+          X-Conversation-Id:{{#sys.conversation_id#}}
+
+          Content-Type:application/json'
+        method: post
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          connect: 10
+          max_connect_time: 10
+          max_read_time: 60
+          max_write_time: 20
+          read: 60
+          write: 20
+        title: POST Escalar Ticket
+        type: http-request
+        url: '{{#env.BACKEND_URL#}}/v1/ticket/escalate'
+        variables: []
+      height: 157
+      id: http-escalate
+      position:
+        x: 2841.491589358795
+        y: 843.5007517614258
+      positionAbsolute:
+        x: 2841.491589358795
+        y: 843.5007517614258
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "function main({status_code, body}) {\n  var code = parseInt(String(status_code))\
+          \ || 0;\n  var ok = (code >= 200 && code < 300);\n  var safe = (body ||\
+          \ '')\n    .replace(/([a-zA-Z0-9._%+\\-]{3})[a-zA-Z0-9._%+\\-]*(@[a-zA-Z0-9.\\\
+          -]+\\.[a-zA-Z]{2,})/g, '$1***$2')\n    .replace(/\\d{2}\\.\\d{3}\\.\\d{3}\\\
+          /\\d{4}-\\d{2}/g, '**.***.***/**01-**')\n    .replace(/\\((\\d{2})\\)\\\
+          s*\\d{4,5}-(\\d{4})/g, '(**) *****-$2')\n    .replace(/\"phone\"\\s*:\\\
+          s*\"(\\d{2})\\d+(\\d{4})\"/g, '\"phone\":\"$1*****$2\"')\n    .replace(/\"\
+          cpf\"\\s*:\\s*\"\\d{3}\\.\\d{3}\\.\\d{3}-(\\d{2})\"/g, '\"cpf\":\"***.***.***-$1\"\
+          ');\n  return {\n    is_success: ok ? 'true' : 'false',\n    masked_body:\
+          \ safe\n  };\n}"
+        code_language: javascript
+        desc: ''
+        outputs:
+          is_success:
+            children: null
+            type: string
+          masked_body:
+            children: null
+            type: string
+        selected: false
+        title: check_http_escalate
+        type: code
+        variables:
+        - value_selector:
+          - http-escalate
+          - status_code
+          variable: status_code
+        - value_selector:
+          - http-escalate
+          - body
+          variable: body
+      height: 52
+      id: check-http-escalate
+      position:
+        x: 3305.9999999999995
+        y: 843.5007517614258
+      positionAbsolute:
+        x: 3305.9999999999995
+        y: 843.5007517614258
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        cases:
+        - case_id: case-escalate-ok
+          conditions:
+          - comparison_operator: is
+            value: 'true'
+            variable_selector:
+            - check-http-escalate
+            - is_success
+          id: case-escalate-ok
+          logical_operator: and
+        desc: ''
+        logical_operator: and
+        selected: false
+        title: Escalate OK?
+        type: if-else
+      height: 124
+      id: if-escalate-ok
+      position:
+        x: 4296
+        y: 843.5007517614258
+      positionAbsolute:
+        x: 4296
+        y: 843.5007517614258
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: 'Desculpe, não consegui concluir essa operação agora. O serviço pode
+          estar temporariamente indisponível.
+
+
+          Tente novamente em alguns minutos. Se o problema continuar, avise o time
+          de suporte com o código: {{#sys.conversation_id#}}'
+        desc: ''
+        selected: false
+        title: Erro Escalonamento
+        type: answer
+        variables: []
+      height: 200
+      id: ans-error-escalate
+      position:
+        x: 5050.196542944758
+        y: 927.9083753700945
+      positionAbsolute:
+        x: 5050.196542944758
+        y: 927.9083753700945
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data:
+          - id: key-value-45
+            key: ''
+            type: text
+            value: '{{#1774382887968.body_json#}}'
+          type: raw-text
+        desc: ''
+        headers: 'X-API-Key:{{#env.BACKEND_API_KEY#}}
+
+          X-Conversation-Id:{{#sys.conversation_id#}}
+
+          Content-Type:application/json'
+        method: post
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          connect: 10
+          max_connect_time: 10
+          max_read_time: 60
+          max_write_time: 20
+          read: 60
+          write: 20
+        title: POST Triagem
+        type: http-request
+        url: '{{#env.BACKEND_URL#}}/v1/triage'
+        variables: []
+      height: 157
+      id: http-triage
+      position:
+        x: 2841.491589358795
+        y: 1368.3589339115895
+      positionAbsolute:
+        x: 2841.491589358795
+        y: 1368.3589339115895
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "function main({status_code, body}) {\n  var code = parseInt(String(status_code))\
+          \ || 0;\n  var ok = (code >= 200 && code < 300);\n  var safe = (body ||\
+          \ '')\n    .replace(/([a-zA-Z0-9._%+\\-]{3})[a-zA-Z0-9._%+\\-]*(@[a-zA-Z0-9.\\\
+          -]+\\.[a-zA-Z]{2,})/g, '$1***$2')\n    .replace(/\\d{2}\\.\\d{3}\\.\\d{3}\\\
+          /\\d{4}-\\d{2}/g, '**.***.***/**01-**')\n    .replace(/\\((\\d{2})\\)\\\
+          s*\\d{4,5}-(\\d{4})/g, '(**) *****-$2')\n    .replace(/\"phone\"\\s*:\\\
+          s*\"(\\d{2})\\d+(\\d{4})\"/g, '\"phone\":\"$1*****$2\"')\n    .replace(/\"\
+          cpf\"\\s*:\\s*\"\\d{3}\\.\\d{3}\\.\\d{3}-(\\d{2})\"/g, '\"cpf\":\"***.***.***-$1\"\
+          ');\n  return {\n    is_success: ok ? 'true' : 'false',\n    masked_body:\
+          \ safe\n  };\n}"
+        code_language: javascript
+        desc: ''
+        outputs:
+          is_success:
+            children: null
+            type: string
+          masked_body:
+            children: null
+            type: string
+        selected: false
+        title: check_http_triage
+        type: code
+        variables:
+        - value_selector:
+          - http-triage
+          - status_code
+          variable: status_code
+        - value_selector:
+          - http-triage
+          - body
+          variable: body
+      height: 52
+      id: check-http-triage
+      position:
+        x: 3305.9999999999995
+        y: 1368.3589339115895
+      positionAbsolute:
+        x: 3305.9999999999995
+        y: 1368.3589339115895
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        cases:
+        - case_id: case-triage-ok
+          conditions:
+          - comparison_operator: is
+            value: 'true'
+            variable_selector:
+            - check-http-triage
+            - is_success
+          logical_operator: and
+        desc: ''
+        logical_operator: and
+        selected: false
+        title: Triagem OK?
+        type: if-else
+      height: 124
+      id: if-triage-ok
+      position:
+        x: 4296
+        y: 1368.3589339115895
+      positionAbsolute:
+        x: 4296
+        y: 1368.3589339115895
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: 'Desculpe, não consegui concluir essa operação agora. O serviço pode
+          estar temporariamente indisponível.
+
+
+          Tente novamente em alguns minutos. Se o problema continuar, avise o time
+          de suporte com o código: {{#sys.conversation_id#}}'
+        desc: ''
+        selected: false
+        title: Erro Triagem
+        type: answer
+        variables: []
+      height: 200
+      id: ans-error-triage
+      position:
+        x: 5050.196542944758
+        y: 1447.7553118038795
+      positionAbsolute:
+        x: 5050.196542944758
+        y: 1447.7553118038795
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - kb-retrieval
+          - result
+        desc: ''
+        memory:
+          query_prompt_template: '{{#sys.query#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: false
+            size: 20
+        model:
+          completion_params:
+            temperature: 0.3
+          mode: chat
+          name: gpt-4o
+          provider: langgenius/openai/openai
+        prompt_template:
+        - id: b8e17800-6151-40c5-ae03-50dc5aba8787
+          role: system
+          text: 'Você é um assistente de suporte B2B especialista em documentação
+            interna.
+
+            Responda à pergunta do usuário com base exclusivamente no contexto da
+            documentação fornecido abaixo.
+
+            Retorne SOMENTE um JSON válido, sem texto adicional, no seguinte formato:
+
+            Se a informação foi encontrada no contexto:
+
+            json
+
+            {"encontrou": true, "resposta": "sua resposta clara e objetiva aqui"}
+
+            Se a informação NÃO foi encontrada no contexto:
+
+            json
+
+            {"encontrou": false, "resposta": "Não encontrei essa informação na documentação
+            interna."}
+
+            Seja claro, objetivo e responda sempre em português.
+
+
+            DOCUMENTAÇÃO:
+
+            {{#context#}}
+
+            '
+        - id: 9ba5470c-321f-4a5c-9418-9fa233b28a2f
+          role: user
+          text: '{{#sys.query#}}'
+        selected: false
+        title: Formatar Resposta Documentação
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 88
+      id: llm-format-kb
+      position:
+        x: 2841.491589358795
+        y: 1668
+      positionAbsolute:
+        x: 2841.491589358795
+        y: 1668
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: 'Não consegui entender o que você precisa. Posso ajudar com:
+
+
+          - **Consultar cliente** — ex: "Consulte o cliente CUST-001"
+
+          - **Ver SLA** — ex: "Qual o SLA do CUST-002?"
+
+          - **Ver ticket** — ex: "Mostre o ticket TKT-00001"
+
+          - **Criar ticket** — ex: "Abrir ticket para CUST-001: sistema fora do ar"
+
+          - **Escalar ticket** — ex: "Escalar TKT-00001 pois cliente está impactado"
+
+          - **Triagem** — ex: "Triagem: outage crítico no cliente CUST-001"
+
+          - **Dúvidas** — ex: "Como funciona o processo de escalonamento?"
+
+
+          Como posso ajudar?'
+        desc: ''
+        selected: false
+        title: Intenção Desconhecida
+        type: answer
+        variables: []
+      height: 324
+      id: ans-unknown
+      position:
+        x: 1808
+        y: 1912
+      positionAbsolute:
+        x: 1808
+        y: 1912
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "function main({is_http_ok, masked_body, customer_id}) {\n  if (is_http_ok\
+          \ !== 'true') {\n    return { is_success: 'false', masked_body: masked_body\
+          \ || '{}' };\n  }\n  try {\n    var obj = JSON.parse(masked_body || '{}');\n\
+          \    if (!obj.success || !Array.isArray(obj.data)) {\n      return { is_success:\
+          \ 'false', masked_body: JSON.stringify({success:false,error:{code:'PARSE_ERROR',message:'Resposta\
+          \ inválida do servidor.'}}) };\n    }\n    var id = (customer_id || '').trim().toUpperCase();\n\
+          \    var item = obj.data.find(function(c) { return c.id === id; });\n  \
+          \  if (!item) {\n      return { is_success: 'false', masked_body: JSON.stringify({success:false,error:{code:'NOT_FOUND',message:'Cliente\
+          \ ' + id + ' não encontrado.'}}) };\n    }\n    return { is_success: 'true',\
+          \ masked_body: JSON.stringify({success:true,data:item}) };\n  } catch(e)\
+          \ {\n    return { is_success: 'false', masked_body: JSON.stringify({success:false,error:{code:'PARSE_ERROR',message:'Erro\
+          \ ao processar resposta.'}}) };\n  }\n}"
+        code_language: javascript
+        desc: ''
+        outputs:
+          is_success:
+            children: null
+            type: string
+          masked_body:
+            children: null
+            type: string
+        selected: false
+        title: Filtrar Cliente da Lista
+        type: code
+        variables:
+        - value_selector:
+          - check-mask-customer
+          - is_success
+          variable: is_http_ok
+        - value_selector:
+          - check-mask-customer
+          - masked_body
+          variable: masked_body
+        - value_selector:
+          - '1774379485512'
+          - customer_id_clean
+          value_type: string
+          variable: customer_id
+      height: 52
+      id: filter-customer
+      position:
+        x: 3774
+        y: -954.9662002614755
+      positionAbsolute:
+        x: 3774
+        y: -954.9662002614755
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "function main({is_http_ok, masked_body, customer_id}) {\n  if (is_http_ok\
+          \ !== 'true') {\n    return { is_success: 'false', masked_body: masked_body\
+          \ || '{}' };\n  }\n  try {\n    var obj = JSON.parse(masked_body || '{}');\n\
+          \    if (!obj.success || !Array.isArray(obj.data)) {\n      return { is_success:\
+          \ 'false', masked_body: JSON.stringify({success:false,error:{code:'PARSE_ERROR',message:'Resposta\
+          \ inválida do servidor.'}}) };\n    }\n    var id = (customer_id || '').trim().toUpperCase();\n\
+          \    var item = obj.data.find(function(s) { return s.customerId === id;\
+          \ });\n    if (!item) {\n      return { is_success: 'false', masked_body:\
+          \ JSON.stringify({success:false,error:{code:'NOT_FOUND',message:'SLA do\
+          \ cliente ' + id + ' não encontrado.'}}) };\n    }\n    return { is_success:\
+          \ 'true', masked_body: JSON.stringify({success:true,data:item}) };\n  }\
+          \ catch(e) {\n    return { is_success: 'false', masked_body: JSON.stringify({success:false,error:{code:'PARSE_ERROR',message:'Erro\
+          \ ao processar resposta.'}}) };\n  }\n}"
+        code_language: javascript
+        desc: ''
+        outputs:
+          is_success:
+            children: null
+            type: string
+          masked_body:
+            children: null
+            type: string
+        selected: false
+        title: Filtrar SLA da Lista
+        type: code
+        variables:
+        - value_selector:
+          - check-mask-sla
+          - is_success
+          variable: is_http_ok
+        - value_selector:
+          - check-mask-sla
+          - masked_body
+          variable: masked_body
+        - value_selector:
+          - '1774380894849'
+          - customer_id_clean
+          value_type: string
+          variable: customer_id
+      height: 52
+      id: filter-sla
+      position:
+        x: 3774
+        y: -500
+      positionAbsolute:
+        x: 3774
+        y: -500
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "function main({is_http_ok, masked_body, ticket_id}) {\n  if (is_http_ok\
+          \ !== 'true') {\n    return { is_success: 'false', masked_body: masked_body\
+          \ || '{}' };\n  }\n  try {\n    var obj = JSON.parse(masked_body || '{}');\n\
+          \    if (!obj.success || !Array.isArray(obj.data)) {\n      return { is_success:\
+          \ 'false', masked_body: JSON.stringify({success:false,error:{code:'PARSE_ERROR',message:'Resposta\
+          \ inválida do servidor.'}}) };\n    }\n    var id = (ticket_id || '').trim().toUpperCase();\n\
+          \    var item = obj.data.find(function(t) { return t.id === id; });\n  \
+          \  if (!item) {\n      return { is_success: 'false', masked_body: JSON.stringify({success:false,error:{code:'NOT_FOUND',message:'Ticket\
+          \ ' + id + ' não encontrado.'}}) };\n    }\n    return { is_success: 'true',\
+          \ masked_body: JSON.stringify({success:true,data:item}) };\n  } catch(e)\
+          \ {\n    return { is_success: 'false', masked_body: JSON.stringify({success:false,error:{code:'PARSE_ERROR',message:'Erro\
+          \ ao processar resposta.'}}) };\n  }\n}"
+        code_language: javascript
+        desc: ''
+        outputs:
+          is_success:
+            children: null
+            type: string
+          masked_body:
+            children: null
+            type: string
+        selected: false
+        title: Filtrar Ticket da Lista
+        type: code
+        variables:
+        - value_selector:
+          - check-mask-ticket
+          - is_success
+          variable: is_http_ok
+        - value_selector:
+          - check-mask-ticket
+          - masked_body
+          variable: masked_body
+        - value_selector:
+          - '1774380908747'
+          - ticket_id_clean
+          value_type: string
+          variable: ticket_id
+      height: 52
+      id: filter-ticket
+      position:
+        x: 3774
+        y: -64
+      positionAbsolute:
+        x: 3774
+        y: -64
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "function main({masked_body}) {\n  try {\n    var obj = JSON.parse(masked_body\
+          \ || '{}');\n    if (!obj.success) {\n      var msg = (obj.error && obj.error.message)\
+          \ ? obj.error.message : 'Erro desconhecido.';\n      return { resposta_cliente:\
+          \ 'Não foi possível exibir os dados do cliente.\\n\\n' + msg };\n    }\n\
+          \    var c = obj.data;\n    var lines = [];\n    lines.push('**Dados do\
+          \ Cliente**');\n    lines.push('**ID:** ' + (c.id || '-'));\n    lines.push('**Nome:**\
+          \ ' + (c.name || '-'));\n    lines.push('**CNPJ:** ' + (c.cnpj || '-'));\n\
+          \    lines.push('**Segmento:** ' + (c.segment || '-'));\n    lines.push('**Status:**\
+          \ ' + (c.status || '-'));\n    lines.push('**Email:** ' + (c.email || '-'));\n\
+          \    lines.push('**Telefone:** ' + (c.phone || '-'));\n    if (c.status\
+          \ === 'suspended') {\n      lines.push('\\n⚠️ **Atenção:** Este cliente\
+          \ está SUSPENSO. Não é possível abrir novos tickets.');\n    }\n    if (c.status\
+          \ === 'churned') {\n      lines.push('\\n⚠️ **Atenção:** Este cliente não\
+          \ possui contrato ativo.');\n    }\n    return { resposta_cliente: lines.join('\\\
+          n') };\n  } catch(e) {\n    return { resposta_cliente: 'Erro ao formatar\
+          \ dados do cliente.' };\n  }\n}\n"
+        code_language: javascript
+        desc: ''
+        outputs:
+          resposta_cliente:
+            children: null
+            type: string
+        selected: false
+        title: code_format_customer
+        type: code
+        variables:
+        - value_selector:
+          - filter-customer
+          - masked_body
+          variable: masked_body
+      height: 52
+      id: '17743116666410'
+      position:
+        x: 5050.196542944758
+        y: -954.9662002614755
+      positionAbsolute:
+        x: 5050.196542944758
+        y: -954.9662002614755
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: '{{#17743116666410.resposta_cliente#}}'
+        selected: false
+        title: Resposta Cliente
+        type: answer
+        variables:
+        - value_selector:
+          - '17743116666410'
+          - resposta_cliente
+          variable: output_val
+      height: 103
+      id: '1774311736000'
+      position:
+        x: 5557.486448954291
+        y: -954.9662002614755
+      positionAbsolute:
+        x: 5557.486448954291
+        y: -954.9662002614755
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        dataset_ids:
+        - aDQmZ307C2fOnchTNezsiVe76D5bb/s4SlrQbXVnlGgYfcNi1suYCd2Lz0E2OtTp
+        desc: Recupera documentos da base de conhecimento
+        multiple_retrieval_config:
+          reranking_enable: false
+          reranking_mode: weighted_score
+          top_k: 4
+          weights:
+            keyword_setting:
+              keyword_weight: 0.3
+            vector_setting:
+              embedding_model_name: text-embedding-3-large
+              embedding_provider_name: langgenius/openai/openai
+              vector_weight: 0.7
+            weight_type: customized
+        output_schema:
+          result:
+            children: null
+            type: array[object]
+        query_attachment_selector: []
+        query_variable_selector:
+        - sys
+        - query
+        retrieval_config:
+          reranking_enable: false
+          reranking_mode: reranking_model
+          reranking_model:
+            reranking_model_name: ''
+            reranking_provider_name: ''
+          retrieval_model: hybrid_search
+          score_threshold: 0.5
+          score_threshold_enabled: true
+          top_k: 4
+          weights:
+            keyword_setting:
+              keyword_weight: 0.3
+            vector_setting:
+              embedding_model_name: ''
+              embedding_provider_name: ''
+              vector_weight: 0.7
+        retrieval_mode: multiple
+        selected: false
+        title: Buscar Documentação
+        type: knowledge-retrieval
+      height: 134
+      id: kb-retrieval
+      position:
+        x: 1808
+        y: 1668
+      positionAbsolute:
+        x: 1808
+        y: 1668
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "function main({masked_body}) {\n  try {\n    var obj = JSON.parse(masked_body\
+          \ || '{}');\n    if (!obj.success) {\n      var msg = (obj.error && obj.error.message)\
+          \ ? obj.error.message : 'Erro desconhecido.';\n      return { resposta_sla:\
+          \ 'Não foi possível exibir o SLA.\\n\\n' + msg };\n    }\n    var s = obj.data;\n\
+          \    var lines = [];\n    lines.push('**SLA do Cliente: ' + (s.customerId\
+          \ || '-') + '**');\n    lines.push('**Plano:** ' + (s.plan || '-'));\n \
+          \   lines.push('**Suporte:** ' + (s.supportHours || '-'));\n    lines.push('**Válido\
+          \ até:** ' + (s.validUntil || '-'));\n    if (s.responseTimeHours) {\n \
+          \     lines.push('\\n**Tempos de Resposta (horas):**');\n      var r = s.responseTimeHours;\n\
+          \      lines.push('- P1: ' + (r.P1 !== undefined ? r.P1 : '-') + 'h');\n\
+          \      lines.push('- P2: ' + (r.P2 !== undefined ? r.P2 : '-') + 'h');\n\
+          \      lines.push('- P3: ' + (r.P3 !== undefined ? r.P3 : '-') + 'h');\n\
+          \      lines.push('- P4: ' + (r.P4 !== undefined ? r.P4 : '-') + 'h');\n\
+          \    }\n    if (s.extraFields) {\n      if (s.extraFields.slaExpired) {\n\
+          \        lines.push('\\n⚠️ **CONTRATO SLA EXPIRADO!** Entre em contato com\
+          \ o setor comercial.');\n      }\n      if (s.extraFields.outsideSupportWindow)\
+          \ {\n        lines.push('\\n⏰ Fora do horário de suporte contratado (8x5).');\n\
+          \      }\n    }\n    return { resposta_sla: lines.join('\\n') };\n  } catch(e)\
+          \ {\n    return { resposta_sla: 'Erro ao formatar dados de SLA.' };\n  }\n\
+          }"
+        code_language: javascript
+        desc: ''
+        outputs:
+          resposta_sla:
+            children: null
+            type: string
+        selected: false
+        title: code_format_sla
+        type: code
+        variables:
+        - value_selector:
+          - filter-sla
+          - masked_body
+          value_type: string
+          variable: masked_body
+      height: 52
+      id: '17743702006140'
+      position:
+        x: 5050.196542944758
+        y: -500
+      positionAbsolute:
+        x: 5050.196542944758
+        y: -500
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: '{{#17743702006140.resposta_sla#}}'
+        selected: false
+        title: Resposta Sla
+        type: answer
+        variables:
+        - value_selector:
+          - '17743702006140'
+          - resposta_sla
+          variable: output_val
+      height: 103
+      id: '17743702052110'
+      position:
+        x: 5557.486448954291
+        y: -500
+      positionAbsolute:
+        x: 5557.486448954291
+        y: -500
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "function main({masked_body}) {\n  try {\n    var obj = JSON.parse(masked_body\
+          \ || '{}');\n    if (!obj.success) {\n      var msg = (obj.error && obj.error.message)\
+          \ ? obj.error.message : 'Erro desconhecido.';\n      return { resposta_ticket:\
+          \ 'Não foi possível exibir o ticket.\\n\\n' + msg };\n    }\n    var t =\
+          \ obj.data;\n    var lines = [];\n    lines.push('**Ticket: ' + (t.id ||\
+          \ '-') + '**');\n    lines.push('**Título:** ' + (t.title || '-'));\n  \
+          \  lines.push('**Status:** ' + (t.status || '-'));\n    lines.push('**Prioridade:**\
+          \ ' + (t.priority || '-'));\n    lines.push('**Categoria:** ' + (t.category\
+          \ || '-'));\n    lines.push('**Cliente:** ' + (t.customerId || '-'));\n\
+          \    if (t.description) {\n      var desc = t.description.length > 120 ?\
+          \ t.description.substring(0, 120) + '...' : t.description;\n      lines.push('**Descrição:**\
+          \ ' + desc);\n    }\n    if (t.slaDeadline) lines.push('**Prazo SLA:** '\
+          \ + t.slaDeadline);\n    if (t.assignee) lines.push('**Responsável:** '\
+          \ + t.assignee);\n    if (t.escalated) {\n      lines.push('**Escalado:**\
+          \ Sim — por ' + (t.escalatedBy || '-') + ' em ' + (t.escalatedAt || '-'));\n\
+          \      if (t.escalationReason) lines.push('**Motivo do Escalonamento:**\
+          \ ' + t.escalationReason);\n    } else {\n      lines.push('**Escalado:**\
+          \ Não');\n    }\n    return { resposta_ticket: lines.join('\\n') };\n  }\
+          \ catch(e) {\n    return { resposta_ticket: 'Erro ao formatar dados do ticket.'\
+          \ };\n  }\n}\n"
+        code_language: javascript
+        desc: ''
+        outputs:
+          resposta_ticket:
+            children: null
+            type: string
+        selected: false
+        title: code_format_ticket
+        type: code
+        variables:
+        - value_selector:
+          - filter-ticket
+          - masked_body
+          value_type: string
+          variable: masked_body
+      height: 52
+      id: '17743704399200'
+      position:
+        x: 5050.196542944758
+        y: -64
+      positionAbsolute:
+        x: 5050.196542944758
+        y: -64
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: '{{#17743704399200.resposta_ticket#}}'
+        selected: false
+        title: Resposta Ticket
+        type: answer
+        variables:
+        - value_selector:
+          - '17743704399200'
+          - resposta_ticket
+          variable: output_val
+      height: 103
+      id: '17743704437030'
+      position:
+        x: 5557.486448954291
+        y: -64
+      positionAbsolute:
+        x: 5557.486448954291
+        y: -64
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "function main({masked_body}) {\n  try {\n    var obj = JSON.parse(masked_body\
+          \ || '{}');\n    if (!obj.success) {\n      var msg = (obj.error && obj.error.message)\
+          \ ? obj.error.message : 'Erro desconhecido.';\n      var code = (obj.error\
+          \ && obj.error.code) ? obj.error.code : '';\n      if (code === 'DUPLICATE_TICKET')\
+          \ {\n        var det = obj.error.details || {};\n        return { resposta_ticket_criado:\
+          \ '⚠️ **Ticket duplicado detectado.**\\n' + msg + (det.existingTicketId\
+          \ ? '\\n\\nUse o ticket existente: ' + det.existingTicketId : '') };\n \
+          \     }\n      if (code === 'CUSTOMER_SUSPENDED') {\n        return { resposta_ticket_criado:\
+          \ '⚠️ **Cliente suspenso.**\\n' + msg + '\\n\\nClientes suspensos não podem\
+          \ abrir novos tickets. Entre em contato com o setor comercial.' };\n   \
+          \   }\n      return { resposta_ticket_criado: '❌ Erro ao criar ticket:\\\
+          n' + msg };\n    }\n    var d = obj.data;\n    var t = d.ticket || d;\n\
+          \    var lines = [];\n    lines.push('✅ **Ticket criado com sucesso!**');\n\
+          \    lines.push('**ID:** ' + (t.id || '-'));\n    lines.push('**Título:**\
+          \ ' + (t.title || '-'));\n    lines.push('**Categoria:** ' + (t.category\
+          \ || '-'));\n    lines.push('**Prioridade:** ' + (t.priority || '-'));\n\
+          \    if (d.priorityAutoAssigned) lines.push('*(prioridade sugerida automaticamente)*');\n\
+          \    if (d.priorityOverridden) lines.push('*(prioridade manual — diferente\
+          \ da sugerida pelo sistema)*');\n    if (t.slaDeadline) lines.push('**Prazo\
+          \ SLA:** ' + t.slaDeadline);\n    lines.push('\\nAcompanhe o andamento informando\
+          \ o ID do ticket.');\n    return { resposta_ticket_criado: lines.join('\\\
+          n') };\n  } catch(e) {\n    return { resposta_ticket_criado: 'Erro ao formatar\
+          \ confirmação do ticket.' };\n  }\n}\n"
+        code_language: javascript
+        desc: ''
+        outputs:
+          resposta_ticket_criado:
+            children: null
+            type: string
+        selected: false
+        title: code_format_ticket_criado
+        type: code
+        variables:
+        - value_selector:
+          - check-http-create
+          - masked_body
+          value_type: string
+          variable: masked_body
+      height: 52
+      id: '17743713197380'
+      position:
+        x: 5050.196542944758
+        y: 313.00236617202194
+      positionAbsolute:
+        x: 5050.196542944758
+        y: 313.00236617202194
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: '{{#17743713197380.resposta_ticket_criado#}}'
+        selected: false
+        title: Resposta Ticket Criado
+        type: answer
+        variables:
+        - value_selector:
+          - '17743713197380'
+          - resposta_ticket_criado
+          variable: output_val
+      height: 103
+      id: '17743713253710'
+      position:
+        x: 5557.486448954291
+        y: 313.00236617202194
+      positionAbsolute:
+        x: 5557.486448954291
+        y: 313.00236617202194
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "function main({masked_body}) {\n  try {\n    var obj = JSON.parse(masked_body\
+          \ || '{}');\n    if (!obj.success) {\n      var msg = (obj.error && obj.error.message)\
+          \ ? obj.error.message : 'Erro desconhecido.';\n      var code = (obj.error\
+          \ && obj.error.code) ? obj.error.code : '';\n      if (code === 'ALREADY_ESCALATED')\
+          \ {\n        return { resposta_escalonamento: '⚠️ **Este ticket já foi escalado\
+          \ anteriormente.**\\n' + msg };\n      }\n      if (code === 'TICKET_CLOSED')\
+          \ {\n        return { resposta_escalonamento: '⚠️ **Não é possível escalar\
+          \ este ticket:**\\n' + msg };\n      }\n      return { resposta_escalonamento:\
+          \ '❌ Erro no escalonamento:\\n' + msg };\n    }\n    var t = obj.data;\n\
+          \    var lines = [];\n    lines.push('✅ **Ticket escalado com sucesso!**');\n\
+          \    lines.push('**Ticket:** ' + (t.id || '-'));\n    lines.push('**Nova\
+          \ Prioridade:** ' + (t.priority || '-'));\n    lines.push('**Escalado por:**\
+          \ ' + (t.escalatedBy || '-'));\n    if (t.escalatedAt) lines.push('**Data:**\
+          \ ' + t.escalatedAt);\n    if (t.slaDeadline) lines.push('**Prazo SLA atualizado:**\
+          \ ' + t.slaDeadline);\n    return { resposta_escalonamento: lines.join('\\\
+          n') };\n  } catch(e) {\n    return { resposta_escalonamento: 'Erro ao formatar\
+          \ confirmação do escalonamento.' };\n  }\n}\n"
+        code_language: javascript
+        desc: ''
+        outputs:
+          resposta_escalonamento:
+            children: null
+            type: string
+        selected: false
+        title: code_format_escalonamento
+        type: code
+        variables:
+        - value_selector:
+          - check-http-escalate
+          - masked_body
+          value_type: string
+          variable: masked_body
+      height: 52
+      id: '17743714317700'
+      position:
+        x: 5050.196542944758
+        y: 843.5007517614258
+      positionAbsolute:
+        x: 5050.196542944758
+        y: 843.5007517614258
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: '{{#17743714317700.resposta_escalonamento#}}'
+        selected: false
+        title: Resposta Escalonamento
+        type: answer
+        variables:
+        - value_selector:
+          - '17743714317700'
+          - resposta_escalonamento
+          variable: output_val
+      height: 103
+      id: '17743714408550'
+      position:
+        x: 5557.486448954291
+        y: 843.5007517614258
+      positionAbsolute:
+        x: 5557.486448954291
+        y: 843.5007517614258
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "function main({masked_body}) {\n  try {\n    var obj = JSON.parse(masked_body\
+          \ || '{}');\n    if (!obj.success) {\n      var msg = (obj.error && obj.error.message)\
+          \ ? obj.error.message : 'Erro desconhecido.';\n      return { resposta_triagem:\
+          \ '❌ Erro na triagem:\\n' + msg };\n    }\n    var d = obj.data;\n    var\
+          \ lines = [];\n    lines.push('**Resultado da Triagem**');\n    lines.push('**Prioridade\
+          \ sugerida:** ' + (d.priority || '-'));\n    if (d.priorityReason) lines.push('**Motivo:**\
+          \ ' + d.priorityReason);\n    if (d.slaHours !== undefined && d.slaHours\
+          \ !== null) {\n      lines.push('**Tempo de resposta SLA:** ' + d.slaHours\
+          \ + 'h');\n    }\n    if (d.slaDeadline) lines.push('**Prazo:** ' + d.slaDeadline);\n\
+          \    if (Array.isArray(d.recommendedActions) && d.recommendedActions.length\
+          \ > 0) {\n      lines.push('\\n**Ações recomendadas:**');\n      for (var\
+          \ i = 0; i < d.recommendedActions.length; i++) {\n        lines.push('-\
+          \ ' + d.recommendedActions[i]);\n      }\n    }\n    if (d.summary) lines.push('\\\
+          n' + d.summary);\n    lines.push('\\nDeseja abrir um ticket com base nessa\
+          \ triagem?');\n    return { resposta_triagem: lines.join('\\n') };\n  }\
+          \ catch(e) {\n    return { resposta_triagem: 'Erro ao formatar resultado\
+          \ da triagem.' };\n  }\n}\n"
+        code_language: javascript
+        desc: ''
+        outputs:
+          resposta_triagem:
+            children: null
+            type: string
+        selected: false
+        title: code_format_triagem
+        type: code
+        variables:
+        - value_selector:
+          - check-http-triage
+          - masked_body
+          value_type: string
+          variable: masked_body
+      height: 52
+      id: '17743717332860'
+      position:
+        x: 5050.196542944758
+        y: 1368.3589339115895
+      positionAbsolute:
+        x: 5050.196542944758
+        y: 1368.3589339115895
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: '{{#17743717332860.resposta_triagem#}}'
+        selected: false
+        title: Resposta Triagem
+        type: answer
+        variables:
+        - value_selector:
+          - '17743717332860'
+          - resposta_triagem
+          variable: output_val
+      height: 103
+      id: '17743717429330'
+      position:
+        x: 5557.486448954291
+        y: 1368.3589339115895
+      positionAbsolute:
+        x: 5557.486448954291
+        y: 1368.3589339115895
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "function main({ llm_output }) {\n  try {\n    var raw = llm_output\
+          \ || '';\n    \n    // Remove o prefixo \"json\\n\" e aspas externas\n \
+          \   raw = raw.replace(/^json\\\\n/, '');\n    \n    // Tenta fazer parse\
+          \ direto\n    var parsed = JSON.parse(raw);\n    \n    var resposta = parsed.resposta\
+          \ || 'Não foi possível obter uma resposta.';\n    \n    return { resposta_conhecimento:\
+          \ resposta };\n  } catch(e) {\n    // Se falhar, tenta extrair sem parse\n\
+          \    var match = (llm_output || '').match(/\"resposta\":\\s*\"([^\"]+)\"\
+          /);\n    if (match && match[1]) {\n      return { resposta_conhecimento:\
+          \ match[1] };\n    }\n    return { resposta_conhecimento: 'Erro ao processar\
+          \ a resposta da documentação.' };\n  }\n}"
+        code_language: javascript
+        desc: ''
+        outputs:
+          resposta_conhecimento:
+            children: null
+            type: string
+        selected: false
+        title: code_format_conhecimento
+        type: code
+        variables:
+        - value_selector:
+          - llm-format-kb
+          - text
+          value_type: string
+          variable: llm_output
+      height: 52
+      id: '17743720648640'
+      position:
+        x: 5050.196542944758
+        y: 1685.786248394326
+      positionAbsolute:
+        x: 5050.196542944758
+        y: 1685.786248394326
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: '{{#17743720648640.resposta_conhecimento#}}'
+        selected: false
+        title: Resposta Conhecimento
+        type: answer
+        variables:
+        - value_selector:
+          - '17743720648640'
+          - resposta_conhecimento
+          variable: output_val
+      height: 103
+      id: '17743720720970'
+      position:
+        x: 5557.486448954291
+        y: 1685.786248394326
+      positionAbsolute:
+        x: 5557.486448954291
+        y: 1685.786248394326
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        cases:
+        - case_id: case-customer-ok
+          conditions:
+          - comparison_operator: contains
+            value: 'true'
+            varType: string
+            variable_selector:
+            - llm-format-kb
+            - text
+          id: case-customer-ok
+          logical_operator: and
+        desc: ''
+        logical_operator: and
+        selected: false
+        title: API Conhecimento OK?
+        type: if-else
+      height: 124
+      id: '17743723273630'
+      position:
+        x: 4296
+        y: 1685.786248394326
+      positionAbsolute:
+        x: 4296
+        y: 1685.786248394326
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: '📚 Não encontrei essa informação na documentação interna.
+
+
+          Se precisar de ajuda com outro assunto, posso ajudar com:
+
+          - Consulta de clientes e SLAs
+
+          - Visualização de tickets
+
+          - Abertura e escalonamento
+
+          - Triagem de incidentes'
+        desc: ''
+        selected: false
+        title: Erro API Conhecimento
+        type: answer
+        variables: []
+      height: 196
+      id: '17743723513660'
+      position:
+        x: 5050.196542944758
+        y: 1768.6929651308074
+      positionAbsolute:
+        x: 5050.196542944758
+        y: 1768.6929651308074
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "function main({ customer_id }) {\n  var cust_id = (customer_id || '').trim().toUpperCase();\n\
+          \  if (!cust_id) {\n    return { \n      valid: 'false', \n      message:\
+          \ 'ID do cliente não informado. Para consultar um cliente, informe o ID\
+          \ no formato CUST-XXX (ex: CUST-001).' \n    };\n  }\n  if (!/^CUST-[A-Z0-9]+$/i.test(cust_id))\
+          \ {\n    return { \n      valid: 'false', \n      message: 'Formato de ID\
+          \ de cliente inválido: \"' + cust_id + '\". Formato esperado: CUST-XXX (ex:\
+          \ CUST-001).' \n    };\n  }\n  return { valid: 'true', message: '', customer_id_clean:\
+          \ cust_id };\n}"
+        code_language: javascript
+        outputs:
+          customer_id_clean:
+            children: null
+            type: string
+          message:
+            children: null
+            type: string
+          valid:
+            children: null
+            type: string
+        selected: false
+        title: Validar ID Cliente
+        type: code
+        variables:
+        - value_selector:
+          - parse-intent
+          - customer_id
+          value_type: string
+          variable: customer_id
+      height: 52
+      id: '1774379485512'
+      position:
+        x: 1731.7186565471861
+        y: -986.9662002614755
+      positionAbsolute:
+        x: 1731.7186565471861
+        y: -986.9662002614755
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: is
+            id: 6e678a4f-3334-48fe-ab04-6ef87b24739d
+            value: 'true'
+            varType: string
+            variable_selector:
+            - '1774379485512'
+            - valid
+          id: 'true'
+          logical_operator: and
+        selected: false
+        title: cliente_valido?
+        type: if-else
+      height: 124
+      id: '1774379805496'
+      position:
+        x: 2280.3474296555273
+        y: -986.9662002614755
+      positionAbsolute:
+        x: 2280.3474296555273
+        y: -986.9662002614755
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: '❌ Não foi possível realizar a consulta.
+
+
+          {{#1774379485512.message#}}
+
+
+          Verifique o ID e tente novamente. Exemplo: CUST-001 para cliente ou TKT-00001
+          para ticket.'
+        selected: false
+        title: erro_id_cliente
+        type: answer
+        variables:
+        - value_selector:
+          - '1774379485512'
+          - message
+          variable: output_val
+      height: 152
+      id: '1774379922763'
+      position:
+        x: 2841.491589358795
+        y: -750.9152648931325
+      positionAbsolute:
+        x: 2841.491589358795
+        y: -750.9152648931325
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "function main({ customer_id }) {\n  var cust_id = (customer_id || '').trim().toUpperCase();\n\
+          \  if (!cust_id) {\n    return { \n      valid: 'false', \n      message:\
+          \ 'ID do cliente não informado. Para consultar o SLA, informe o ID no formato\
+          \ CUST-XXX (ex: CUST-001).' \n    };\n  }\n  if (!/^CUST-[A-Z0-9]+$/i.test(cust_id))\
+          \ {\n    return { \n      valid: 'false', \n      message: 'Formato de ID\
+          \ de cliente inválido: \"' + cust_id + '\". Formato esperado: CUST-XXX (ex:\
+          \ CUST-001).' \n    };\n  }\n  return { valid: 'true', message: '', customer_id_clean:\
+          \ cust_id };\n}"
+        code_language: javascript
+        outputs:
+          customer_id_clean:
+            children: null
+            type: string
+          message:
+            children: null
+            type: string
+          valid:
+            children: null
+            type: string
+        selected: false
+        title: Validar ID SLA
+        type: code
+        variables:
+        - value_selector:
+          - parse-intent
+          - customer_id
+          value_type: string
+          variable: customer_id
+      height: 52
+      id: '1774380894849'
+      position:
+        x: 1731.7186565471861
+        y: -534.1020268030757
+      positionAbsolute:
+        x: 1731.7186565471861
+        y: -534.1020268030757
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "function main({ ticket_id }) {\n  var tkt_id = (ticket_id || '').trim().toUpperCase();\n\
+          \  if (!tkt_id) {\n    return { \n      valid: 'false', \n      message:\
+          \ 'ID do ticket não informado. Para consultar um ticket, informe o ID no\
+          \ formato TKT-00000 (ex: TKT-00001).' \n    };\n  }\n  if (!/^TKT-\\d{5}$/i.test(tkt_id))\
+          \ {\n    return { \n      valid: 'false', \n      message: 'Formato de ID\
+          \ de ticket inválido: \"' + tkt_id + '\". Formato esperado: TKT-NNNNN com\
+          \ 5 dígitos (ex: TKT-00001).' \n    };\n  }\n  return { valid: 'true', message:\
+          \ '', ticket_id_clean: tkt_id };\n}"
+        code_language: javascript
+        outputs:
+          message:
+            children: null
+            type: string
+          ticket_id_clean:
+            children: null
+            type: string
+          valid:
+            children: null
+            type: string
+        selected: false
+        title: Validar ID Ticket
+        type: code
+        variables:
+        - value_selector:
+          - parse-intent
+          - ticket_id
+          value_type: string
+          variable: ticket_id
+      height: 52
+      id: '1774380908747'
+      position:
+        x: 1731.7186565471861
+        y: -95.97065012788345
+      positionAbsolute:
+        x: 1731.7186565471861
+        y: -95.97065012788345
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: is
+            id: 58f5245a-4ffa-42cd-baf7-1181883395ec
+            value: 'true'
+            varType: string
+            variable_selector:
+            - '1774380894849'
+            - valid
+          id: 'true'
+          logical_operator: and
+        selected: false
+        title: sla_valido?
+        type: if-else
+      height: 124
+      id: '1774380923464'
+      position:
+        x: 2280.3474296555273
+        y: -534.1020268030757
+      positionAbsolute:
+        x: 2280.3474296555273
+        y: -534.1020268030757
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: is
+            id: a1a1207b-221e-43eb-ae2a-2443a6ba4c53
+            value: 'true'
+            varType: string
+            variable_selector:
+            - '1774380908747'
+            - valid
+          id: 'true'
+          logical_operator: and
+        selected: false
+        title: ticket_valido?
+        type: if-else
+      height: 124
+      id: '1774380935947'
+      position:
+        x: 2280.3474296555273
+        y: -95.97065012788345
+      positionAbsolute:
+        x: 2280.3474296555273
+        y: -95.97065012788345
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: '❌ Não foi possível realizar a consulta.
+
+
+          {{#1774380894849.message#}}
+
+
+          Verifique o ID e tente novamente. Exemplo: CUST-001 para cliente ou TKT-00001
+          para ticket.'
+        selected: false
+        title: erro_id_sla
+        type: answer
+        variables:
+        - value_selector:
+          - '1774380894849'
+          - message
+          variable: output_val
+      height: 167
+      id: '17743809863970'
+      position:
+        x: 2841.491589358795
+        y: -296.3865640546164
+      positionAbsolute:
+        x: 2841.491589358795
+        y: -296.3865640546164
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: '❌ Não foi possível realizar a consulta.
+
+
+          {{#1774380908747.message#}}
+
+
+          Verifique o ID e tente novamente. Exemplo: CUST-001 para cliente ou TKT-00001
+          para ticket.'
+        selected: false
+        title: erro_id_ticket
+        type: answer
+        variables:
+        - value_selector:
+          - '1774380908747'
+          - message
+          variable: output_val
+      height: 167
+      id: '17743809922790'
+      position:
+        x: 2841.491589358795
+        y: 123.4946409582526
+      positionAbsolute:
+        x: 2841.491589358795
+        y: 123.4946409582526
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "function main({ customer_id, category, impact, affected_users, description\
+          \ }) {\n  var body = {\n    customerId: customer_id,\n    category: category,\n\
+          \    impactLevel: impact,\n    affectedUsers: parseInt(affected_users) ||\
+          \ 1,\n    description: description\n  };\n  return { body_json: JSON.stringify(body)\
+          \ };\n}"
+        code_language: javascript
+        outputs:
+          body_json:
+            children: null
+            type: string
+        selected: false
+        title: montar_body_triage
+        type: code
+        variables:
+        - value_selector:
+          - parse-intent
+          - customer_id
+          value_type: string
+          variable: customer_id
+        - value_selector:
+          - parse-intent
+          - category
+          value_type: string
+          variable: category
+        - value_selector:
+          - parse-intent
+          - impact
+          value_type: string
+          variable: impact
+        - value_selector:
+          - parse-intent
+          - affected_users
+          value_type: string
+          variable: affected_users
+        - value_selector:
+          - parse-intent
+          - description
+          value_type: string
+          variable: description
+      height: 52
+      id: '1774382887968'
+      position:
+        x: 1808
+        y: 1368.3589339115895
+      positionAbsolute:
+        x: 1808
+        y: 1368.3589339115895
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "function main({ customer_id, title, description, category, reporter_email\
+          \ }) {\n  var body = {\n    customerId: customer_id,\n    title: title,\n\
+          \    description: description,\n    category: category,\n    reporterEmail:\
+          \ reporter_email,\n    affectedUsers: 1\n  };\n  return { body_json: JSON.stringify(body)\
+          \ };\n}"
+        code_language: javascript
+        outputs:
+          body_json:
+            children: null
+            type: string
+        selected: false
+        title: montar_body_create
+        type: code
+        variables:
+        - value_selector:
+          - guardrail-create
+          - customer_id
+          value_type: string
+          variable: customer_id
+        - value_selector:
+          - guardrail-create
+          - title
+          value_type: string
+          variable: title
+        - value_selector:
+          - guardrail-create
+          - description
+          value_type: string
+          variable: description
+        - value_selector:
+          - guardrail-create
+          - category
+          value_type: string
+          variable: category
+        - value_selector:
+          - guardrail-create
+          - reporter_email
+          value_type: string
+          variable: reporter_email
+      height: 52
+      id: '1774383837224'
+      position:
+        x: 2554.3119392831168
+        y: 313.00236617202194
+      positionAbsolute:
+        x: 2554.3119392831168
+        y: 313.00236617202194
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "function main({ ticket_id, justification, requested_by }) {\n  var\
+          \ body = {\n    ticketId: ticket_id,\n    justification: justification,\n\
+          \    requestedBy: requested_by\n  };\n  return { body_json: JSON.stringify(body)\
+          \ };\n}"
+        code_language: javascript
+        outputs:
+          body_json:
+            children: null
+            type: string
+        selected: false
+        title: montar_body_escalate
+        type: code
+        variables:
+        - value_selector:
+          - guardrail-escalate
+          - ticket_id
+          value_type: string
+          variable: ticket_id
+        - value_selector:
+          - guardrail-escalate
+          - justification
+          value_type: string
+          variable: justification
+        - value_selector:
+          - guardrail-escalate
+          - requested_by
+          value_type: string
+          variable: requested_by
+      height: 52
+      id: '1774384382703'
+      position:
+        x: 2554.3119392831168
+        y: 843.5007517614258
+      positionAbsolute:
+        x: 2554.3119392831168
+        y: 843.5007517614258
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data:
+          - id: evt-customer-body
+            key: ''
+            type: text
+            value: '{"conversationId":"{{#sys.conversation_id#}}","intent":"GET_CUSTOMER","action":"consultar
+              cliente","customerId":"{{#parse-intent.customer_id#}}","result":"success"}'
+          type: raw-text
+        desc: ''
+        headers: 'X-API-Key:{{#env.BACKEND_API_KEY#}}
+
+          X-Conversation-Id:{{#sys.conversation_id#}}
+
+          Content-Type:application/json'
+        method: post
+        params: ''
+        retry_config:
+          max_retries: 1
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          connect: 5
+          max_connect_time: 5
+          max_read_time: 10
+          max_write_time: 10
+          read: 10
+          write: 10
+        title: Registrar Evento GET_CUSTOMER
+        type: http-request
+        url: '{{#env.BACKEND_URL#}}/v1/conversation/event'
+        variables: []
+      height: 157
+      id: evt-customer
+      position:
+        x: 5303.841970949525
+        y: -954.9662002614755
+      positionAbsolute:
+        x: 5303.841970949525
+        y: -954.9662002614755
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data:
+          - id: evt-sla-body
+            key: ''
+            type: text
+            value: '{"conversationId":"{{#sys.conversation_id#}}","intent":"GET_SLA","action":"consultar
+              SLA do cliente","customerId":"{{#parse-intent.customer_id#}}","result":"success"}'
+          type: raw-text
+        desc: ''
+        headers: 'X-API-Key:{{#env.BACKEND_API_KEY#}}
+
+          X-Conversation-Id:{{#sys.conversation_id#}}
+
+          Content-Type:application/json'
+        method: post
+        params: ''
+        retry_config:
+          max_retries: 1
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          connect: 5
+          max_connect_time: 5
+          max_read_time: 10
+          max_write_time: 10
+          read: 10
+          write: 10
+        title: Registrar Evento GET_SLA
+        type: http-request
+        url: '{{#env.BACKEND_URL#}}/v1/conversation/event'
+        variables: []
+      height: 157
+      id: evt-sla
+      position:
+        x: 5303.841970949525
+        y: -500
+      positionAbsolute:
+        x: 5303.841970949525
+        y: -500
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data:
+          - id: evt-ticket-body
+            key: ''
+            type: text
+            value: '{"conversationId":"{{#sys.conversation_id#}}","intent":"GET_TICKET","action":"consultar
+              ticket","ticketId":"{{#parse-intent.ticket_id#}}","result":"success"}'
+          type: raw-text
+        desc: ''
+        headers: 'X-API-Key:{{#env.BACKEND_API_KEY#}}
+
+          X-Conversation-Id:{{#sys.conversation_id#}}
+
+          Content-Type:application/json'
+        method: post
+        params: ''
+        retry_config:
+          max_retries: 1
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          connect: 5
+          max_connect_time: 5
+          max_read_time: 10
+          max_write_time: 10
+          read: 10
+          write: 10
+        title: Registrar Evento GET_TICKET
+        type: http-request
+        url: '{{#env.BACKEND_URL#}}/v1/conversation/event'
+        variables: []
+      height: 157
+      id: evt-ticket
+      position:
+        x: 5303.841970949525
+        y: -64
+      positionAbsolute:
+        x: 5303.841970949525
+        y: -64
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data:
+          - id: evt-create-body
+            key: ''
+            type: text
+            value: '{"conversationId":"{{#sys.conversation_id#}}","intent":"CREATE_TICKET","action":"criar
+              ticket","customerId":"{{#guardrail-create.customer_id#}}","result":"success"}'
+          type: raw-text
+        desc: ''
+        headers: 'X-API-Key:{{#env.BACKEND_API_KEY#}}
+
+          X-Conversation-Id:{{#sys.conversation_id#}}
+
+          Content-Type:application/json'
+        method: post
+        params: ''
+        retry_config:
+          max_retries: 1
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          connect: 5
+          max_connect_time: 5
+          max_read_time: 10
+          max_write_time: 10
+          read: 10
+          write: 10
+        title: Registrar Evento CREATE_TICKET
+        type: http-request
+        url: '{{#env.BACKEND_URL#}}/v1/conversation/event'
+        variables: []
+      height: 157
+      id: evt-create
+      position:
+        x: 5303.841970949525
+        y: 313.00236617202194
+      positionAbsolute:
+        x: 5303.841970949525
+        y: 313.00236617202194
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data:
+          - id: evt-escalate-body
+            key: ''
+            type: text
+            value: '{"conversationId":"{{#sys.conversation_id#}}","intent":"ESCALATE_TICKET","action":"escalar
+              ticket","ticketId":"{{#guardrail-escalate.ticket_id#}}","result":"success"}'
+          type: raw-text
+        desc: ''
+        headers: 'X-API-Key:{{#env.BACKEND_API_KEY#}}
+
+          X-Conversation-Id:{{#sys.conversation_id#}}
+
+          Content-Type:application/json'
+        method: post
+        params: ''
+        retry_config:
+          max_retries: 1
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          connect: 5
+          max_connect_time: 5
+          max_read_time: 10
+          max_write_time: 10
+          read: 10
+          write: 10
+        title: Registrar Evento ESCALATE_TICKET
+        type: http-request
+        url: '{{#env.BACKEND_URL#}}/v1/conversation/event'
+        variables: []
+      height: 157
+      id: evt-escalate
+      position:
+        x: 5303.841970949525
+        y: 843.5007517614258
+      positionAbsolute:
+        x: 5303.841970949525
+        y: 843.5007517614258
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data:
+          - id: evt-triage-body
+            key: ''
+            type: text
+            value: '{"conversationId":"{{#sys.conversation_id#}}","intent":"TRIAGE","action":"triagem
+              de atendimento","customerId":"{{#parse-intent.customer_id#}}","result":"success"}'
+          type: raw-text
+        desc: ''
+        headers: 'X-API-Key:{{#env.BACKEND_API_KEY#}}
+
+          X-Conversation-Id:{{#sys.conversation_id#}}
+
+          Content-Type:application/json'
+        method: post
+        params: ''
+        retry_config:
+          max_retries: 1
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          connect: 5
+          max_connect_time: 5
+          max_read_time: 10
+          max_write_time: 10
+          read: 10
+          write: 10
+        title: Registrar Evento TRIAGE
+        type: http-request
+        url: '{{#env.BACKEND_URL#}}/v1/conversation/event'
+        variables: []
+      height: 157
+      id: evt-triage
+      position:
+        x: 5303.841970949525
+        y: 1368.3589339115895
+      positionAbsolute:
+        x: 5303.841970949525
+        y: 1368.3589339115895
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data:
+          - type: text
+            value: ''
+          type: none
+        desc: ''
+        headers: 'X-API-Key:{{#env.BACKEND_API_KEY#}}
+
+          X-Conversation-Id:{{#sys.conversation_id#}}
+
+          Content-Type:application/json'
+        method: get
+        params: ''
+        retry_config:
+          max_retries: 2
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          connect: 10
+          max_connect_time: 10
+          max_read_time: 60
+          max_write_time: 20
+          read: 60
+          write: 20
+        title: GET Resumo Atendimento
+        type: http-request
+        url: '{{#env.BACKEND_URL#}}/v1/conversation/summary?conversationId={{#sys.conversation_id#}}'
+        variables: []
+      height: 157
+      id: http-summary
+      position:
+        x: 2841.491589358795
+        y: 1900
+      positionAbsolute:
+        x: 2841.491589358795
+        y: 1900
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        cases:
+        - case_id: case-summary-ok
+          conditions:
+          - comparison_operator: is
+            value: '200'
+            variable_selector:
+            - http-summary
+            - status_code
+          logical_operator: and
+        desc: ''
+        logical_operator: and
+        selected: false
+        title: Resumo OK?
+        type: if-else
+      height: 124
+      id: check-summary
+      position:
+        x: 3350
+        y: 1900
+      positionAbsolute:
+        x: 3350
+        y: 1900
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "function main({body}) {\n  try {\n    var d = JSON.parse(body).data;\n\
+          \    var lines = ['\\uD83D\\uDCCB *Resumo do Atendimento*', 'Conversa: '\
+          \ + d.conversationId, 'In\\xEDcio: ' + d.startedAt, 'Total de eventos:\
+          \ ' + d.totalEvents];\n    if (d.customersConsulted && d.customersConsulted.length)\
+          \ lines.push('Clientes consultados: ' + d.customersConsulted.join(', '));\n\
+          \    if (d.ticketsCreated && d.ticketsCreated.length) lines.push('Tickets\
+          \ criados: ' + d.ticketsCreated.join(', '));\n    if (d.ticketsEscalated\
+          \ && d.ticketsEscalated.length) lines.push('Tickets escalados: ' + d.ticketsEscalated.join(',\
+          \ '));\n    if (d.triagePerformed) lines.push('Triagem: realizada');\n  \
+          \  lines.push('', d.summary);\n    return { resposta: lines.join('\\n')\
+          \ };\n  } catch(e) { return { resposta: 'Erro ao processar resumo.' }; }\n\
+          }"
+        code_language: javascript
+        desc: ''
+        outputs:
+          resposta:
+            children: null
+            type: string
+        selected: false
+        title: Formatar Resumo
+        type: code
+        variables:
+        - value_selector:
+          - http-summary
+          - body
+          variable: body
+      height: 52
+      id: code-format-summary
+      position:
+        x: 3860
+        y: 1900
+      positionAbsolute:
+        x: 3860
+        y: 1900
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: '{{#code-format-summary.resposta#}}'
+        desc: ''
+        selected: false
+        title: Resumo do Atendimento
+        type: answer
+        variables:
+        - value_selector:
+          - code-format-summary
+          - resposta
+          variable: output_val
+      height: 103
+      id: ans-summary
+      position:
+        x: 4370
+        y: 1900
+      positionAbsolute:
+        x: 4370
+        y: 1900
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: 'Não encontrei nenhum evento registrado nesta conversa. Realize algumas
+          ações primeiro (consultar cliente, abrir ticket, etc.) e solicite o resumo
+          novamente.'
+        desc: ''
+        selected: false
+        title: Sem Resumo
+        type: answer
+        variables: []
+      height: 151
+      id: ans-no-summary
+      position:
+        x: 3860
+        y: 2060
+      positionAbsolute:
+        x: 3860
+        y: 2060
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    viewport:
+      x: 270.5821730306352
+      y: 259.38863629630447
+      zoom: 0.25
+  rag_pipeline_variables: []

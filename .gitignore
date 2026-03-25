@@ -1,0 +1,6 @@
+# Claude internal memory
+.claude/
+
+# OS
+.DS_Store
+Thumbs.db

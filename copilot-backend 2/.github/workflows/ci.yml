@@ -1,0 +1,109 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Test (Node ${{ matrix.node-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ['20.x', '22.x']
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type check
+        run: npx tsc --noEmit
+
+      - name: Run tests with coverage
+        run: npm run test:coverage
+        env:
+          NODE_ENV: test
+          STUDIO_API_KEY: ci-test-key-placeholder
+          LOG_LEVEL: silent
+          USE_MOCK_APIS: 'true'
+
+      - name: Upload coverage report
+        if: matrix.node-version == '20.x'
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
+          retention-days: 7
+
+  build:
+    name: Build TypeScript
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - run: npm ci
+      - run: npm run build
+
+      - name: Upload dist artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          retention-days: 1
+
+  docker:
+    name: Docker build check
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build --target production -t copilot-backend:ci .
+
+      - name: Smoke test Docker image
+        run: |
+          docker run -d \
+            --name copilot-test \
+            -p 3000:3000 \
+            -e STUDIO_API_KEY=ci-smoke-key \
+            -e NODE_ENV=production \
+            -e USE_MOCK_APIS=true \
+            copilot-backend:ci
+
+          # Wait for container to be healthy
+          for i in $(seq 1 10); do
+            if curl -sf http://localhost:3000/health; then
+              echo "Container healthy"
+              break
+            fi
+            echo "Waiting... ($i/10)"
+            sleep 3
+          done
+
+          docker stop copilot-test
+          docker rm copilot-test
