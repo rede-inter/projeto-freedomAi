@@ -1001,10 +1001,32 @@ workflow:
         isInLoop: false
         sourceType: if-else
         targetType: code
-      id: route-intent-case-triage-1774382887968-target
+      id: route-intent-case-triage-check-triage-customer-target
       source: route-intent
       sourceHandle: case-triage
+      target: check-triage-customer
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: code
+      id: check-triage-customer-case-has-customer-1774382887968-target
+      source: check-triage-customer
+      sourceHandle: case-has-customer
       target: '1774382887968'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: answer
+      id: check-triage-customer-false-ans-triage-no-customer-target
+      source: check-triage-customer
+      sourceHandle: 'false'
+      target: ans-triage-no-customer
       targetHandle: target
       type: custom
       zIndex: 0
@@ -3860,6 +3882,54 @@ workflow:
       positionAbsolute:
         x: 2841.491589358795
         y: 123.4946409582526
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        cases:
+        - case_id: case-has-customer
+          conditions:
+          - comparison_operator: is not empty
+            variable_selector:
+            - parse-intent
+            - customer_id
+          logical_operator: and
+        desc: ''
+        logical_operator: and
+        selected: false
+        title: Cliente informado?
+        type: if-else
+      height: 124
+      id: check-triage-customer
+      position:
+        x: 1450
+        y: 1368.3589339115895
+      positionAbsolute:
+        x: 1450
+        y: 1368.3589339115895
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: 'Para realizar a triagem, preciso saber o ID do cliente. Por favor,
+          informe o ID no formato CUST-XXX (ex: CUST-001).'
+        desc: ''
+        selected: false
+        title: Triagem sem cliente
+        type: answer
+        variables: []
+      height: 107
+      id: ans-triage-no-customer
+      position:
+        x: 1808
+        y: 1600
+      positionAbsolute:
+        x: 1808
+        y: 1600
       selected: false
       sourcePosition: right
       targetPosition: left
